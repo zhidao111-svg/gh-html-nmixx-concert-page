@@ -1,6 +1,6 @@
 # NMIXX Macau 2025 Fan Concert Record Site
 This repository is forked from the base gh-pages-html-template, fully rebuilt into my personal non-profit fan memory static website.
-Live website preview: https://zhidao111-svg.github.io/gh-pages-html-template/
+Live website preview: https://zhidao111-svg.github.io/gh-html-nmixx-concert-page/
 
 ## Project Introduction
 Built with native HTML5 + internal CSS only.
