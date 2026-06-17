@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NMIXX · Experiment in MACAU</title>
+    <style>
+        /* ===== 全局变量 & 重置 ===== */
+        :root {
+            --light-blue: #eef6ff;
+            --text-dark: #333;
+            --white: #ffffff;
+            --gray-bg: #f8fafd;
+            --primary-blue: #0b6cff;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+            background-color: var(--light-blue);
+            color: var(--text-dark);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ===== 顶部导航 ===== */
+        .hero-nav {
+            width: 100%;
+            height: 120px;
+            background-color: var(--light-blue);
+            margin-bottom: -10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        @media (max-width: 768px) {
+            .hero-nav { height: 90px; }
+        }
+        @media (max-width: 480px) {
+            .hero-nav { height: 80px; }
+        }
+
+        .browser-bar {
+            width: 720px;
+            max-width: 90%;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 28px;
+            background: rgba(255, 255, 255, 0.55);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border-radius: 999px;
+            border: 1px solid rgba(120, 150, 190, 0.45);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.14), inset 0 1px 0 rgba(255,255,255,0.65);
+            position: relative;
+            animation: bar-breathe 3s ease-in-out infinite;
+        }
+        @media (max-width: 768px) {
+            .browser-bar { height: 56px; padding: 0 24px; }
+        }
+        @media (max-width: 480px) {
+            .browser-bar { height: 48px; padding: 0 20px; }
+        }
+        .browser-bar::after {
+            content: "★";
+            font-size: 24px;
+            position: absolute;
+            right: 26px;
+            top: 50%;
+            transform: translateY(-50%);
+            opacity: 0.55;
+            color: #555;
+            text-shadow: 0 0 4px rgba(255,255,255,0.35), 0 0 10px rgba(160,180,255,0.25);
+            transition: opacity 0.18s ease, text-shadow 0.18s ease, filter 0.18s ease;
+        }
+        .browser-bar:hover::after {
+            opacity: 0.95;
+            filter: brightness(1.4) contrast(1.15);
+            text-shadow: 0 0 6px rgba(255,255,255,0.9), 0 0 18px rgba(180,200,255,0.75);
+        }
+        .browser-text {
+            font-family: 'Courier New', Consolas, monospace;
+            font-size: 18px;
+            letter-spacing: 2px;
+            color: #555;
+        }
+        @media (max-width: 768px) {
+            .browser-text { font-size: 16px; letter-spacing: 1.5px; }
+        }
+        @media (max-width: 480px) {
+            .browser-text { font-size: 13px; letter-spacing: 1px; }
+        }
+        @keyframes bar-breathe {
+            0% { opacity: 0.92; box-shadow: 0 8px 20px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.6); }
+            50% { opacity: 1; box-shadow: 0 10px 28px rgba(0,0,0,0.22), inset 0 1px 0 rgba(255,255,255,0.8); }
+            100% { opacity: 0.92; box-shadow: 0 8px 20px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.6); }
+        }
+
+        .main-nav {
+            width: 100%;
+            background: transparent;
+            padding: 8px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .nav-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        .nav-menu {
+            display: flex;
+            justify-content: center;
+            gap: 28px;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            flex-wrap: wrap;
+        }
+        @media (max-width: 768px) {
+            .nav-menu { gap: 16px; }
+        }
+        @media (max-width: 480px) {
+            .nav-menu { gap: 12px; justify-content: flex-start; overflow-x: auto; padding: 0 8px; }
+        }
+        .nav-item {
+            position: relative;
+            flex-shrink: 0;
+        }
+        .nav-link {
+            display: inline-block;
+            min-width: 10px;
+            text-align: center;
+            padding: 5px 12px;
+            font-family: 'Courier New', Consolas, monospace;
+            font-weight: 600;
+            font-size: 13px;
+            letter-spacing: 1.4px;
+            text-transform: uppercase;
+            color: #1f2f46;
+            background: #ffffff;
+            border: 1px solid rgba(31, 47, 70, 0.75);
+            border-radius: 0;
+            text-decoration: none;
+            transition: background 0.25s ease, box-shadow 0.25s ease, transform 0.15s ease;
+            cursor: pointer;
+            user-select: none;
+        }
+        .nav-link:hover {
+            background: #eef3f8;
+            color: #1f2f46;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.7), 0 2px 4px rgba(0,0,0,0.18);
+        }
+        .nav-link:active {
+            transform: translateY(2px);
+            box-shadow: inset 1px 1px 0 rgba(0,0,0,0.2), inset -1px -1px 0 rgba(255,255,255,0.8);
+        }
+        .nav-link.active {
+            background: #ffffff;
+            border-color: var(--primary-blue);
+            color: var(--primary-blue);
+        }
+        @media (max-width: 768px) {
+            .nav-link { padding: 4px 10px; font-size: 12px; }
+        }
+        @media (max-width: 480px) {
+            .nav-link { padding: 4px 9px; font-size: 11px; letter-spacing: 1px; }
+        }
+
+        /* ===== 购买页主体 ===== */
+        .product-container {
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+        .product-wrapper {
+            display: flex;
+            gap: 48px;
+            background: #ffffff;
+            border: 1px solid rgba(31, 47, 70, 0.75);
+            padding: 40px;
+            box-shadow: 0 12px 28px rgba(0,0,0,0.08);
+        }
+        .product-image {
+            flex: 1.2;
+            min-width: 0;
+        }
+        .product-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border: 1px solid rgba(31,47,70,0.1);
+        }
+        .product-info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .product-title {
+            font-family: 'Helvetica Neue', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            font-size: 2.2rem;
+            font-weight: 900;
+            color: #1f2f46;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+        }
+        .product-sub {
+            font-family: 'Courier New', Consolas, monospace;
+            font-size: 0.9rem;
+            color: #777;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+        }
+        .info-grid {
+            display: grid;
+            grid-template-columns: 100px 1fr;
+            gap: 6px 16px;
+            font-size: 0.92rem;
+            margin: 12px 0 20px;
+        }
+        .info-grid .label {
+            font-family: 'Courier New', Consolas, monospace;
+            font-weight: 600;
+            color: #1f2f46;
+            letter-spacing: 0.5px;
+        }
+        .info-grid .value {
+            color: #555;
+        }
+        .btn-group {
+            display: flex;
+            gap: 16px;
+            margin-top: 12px;
+            flex-wrap: wrap;
+        }
+        .btn {
+            display: inline-block;
+            padding: 10px 32px;
+            font-family: 'Courier New', Consolas, monospace;
+            font-weight: 600;
+            font-size: 13px;
+            letter-spacing: 1.4px;
+            text-transform: uppercase;
+            text-decoration: none;
+            border: 1px solid rgba(31, 47, 70, 0.75);
+            background: #ffffff;
+            color: #1f2f46;
+            transition: background 0.25s ease, box-shadow 0.25s ease;
+            cursor: pointer;
+            border-radius: 0;
+            text-align: center;
+            flex: 1;
+            min-width: 140px;
+        }
+        .btn:hover {
+            background: #eef3f8;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.7), 0 2px 4px rgba(0,0,0,0.18);
+        }
+        .btn-buy {
+            background: #1f2f46;
+            color: white;
+            border-color: #1f2f46;
+        }
+        .btn-buy:hover {
+            background: #2c3e50;
+        }
+        .btn-watch {
+            background: transparent;
+            color: #1f2f46;
+        }
+
+        /* 按钮字体 */
+        #watchBtn {
+            font-size: 1.3rem;
+            font-weight: 700;
+        }
+
+        /* 响应式 */
+        @media (max-width: 768px) {
+            .product-wrapper {
+                flex-direction: column;
+                padding: 24px;
+                gap: 24px;
+            }
+            .product-image {
+                flex: none;
+            }
+            .product-title {
+                font-size: 1.8rem;
+            }
+            .info-grid {
+                grid-template-columns: 1fr;
+                gap: 2px;
+            }
+            .btn-group {
+                flex-direction: column;
+            }
+            .btn {
+                flex: none;
+                width: 100%;
+            }
+        }
+        @media (max-width: 480px) {
+            .product-wrapper { padding: 16px; }
+            .product-title { font-size: 1.4rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== 顶部导航 ===== -->
+    <div class="hero-nav">
+        <div class="browser-bar">
+            <span class="browser-text">MIXX LAB</span>
+        </div>
+    </div>
+
+    <nav class="main-nav">
+        <div class="nav-container">
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="index.html#home" class="nav-link" data-section="home">HOME</a></li>
+                <li class="nav-item"><a href="index.html#videos" class="nav-link" data-section="videos">STAGE VIDEO</a></li>
+                <li class="nav-item"><a href="index.html#about" class="nav-link" data-section="about">MY CON</a></li>
+                <li class="nav-item"><a href="index.html#gallery" class="nav-link" data-section="gallery">PHOTO WALL</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- ===== 商品详情 ===== -->
+    <div class="product-container" id="app">
+        <div class="product-wrapper">
+            <div class="product-image">
+                <img id="productImage" src="" alt="NMIXX">
+            </div>
+            <div class="product-info">
+                <h1 class="product-title" id="productTitle">NMIXX 2nd Fan Concert</h1>
+                <p class="product-sub" id="productSub">'DASH' in MACAU · 2025.06.28</p>
+
+                <div class="btn-group" style="justify-content: center;">
+                    <a href="#" target="_blank" class="btn btn-watch" id="watchBtn">Mix It</a>
+                </div>
+
+                <div class="info-grid" id="productInfo">
+                    <!-- 由 JavaScript 动态渲染 -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ===== 六首歌数据（配好图片路径） =====
+        const trackData = {
+            1: {
+                title: 'Run For Roses',
+                subtitle: ' ₩ 0 + 1 drop',
+                info: [
+                    ['Volume', '50 mL'],
+                    ['State', 'Liquid · 室温保存'],
+                    ['Effect', '注入后自动奔向舞台，持续 3:30'],
+                    ['Delivery', 'Free if you say "Run!" 🏃'],
+                    ['Return', 'No returns — keep running'],
+                    ['Payment', 'smile only']
+                ],
+                img: '0083znWegy1i87ccvegsoj33y83y84qr.jpg',
+                watchLink: 'https://youtu.be/你的链接1'
+            },
+            2: {
+                title: 'Sonar',
+                subtitle: ' ₩ 0 + 1 pulse',
+                info: [
+                    ['Volume', '50 mL'],
+                    ['State', 'Gas · 避光保存'],
+                    ['Effect', '发出 20Hz~20kHz 信号，锁定你心里那个人'],
+                    ['Delivery', 'Free if you say "Sonar!" 📡'],
+                    ['Return', 'No returns — signal sent'],
+                    ['Payment', 'smile only']
+                ],
+                img: '006YIJCWly1hzdvh4jt3cj30u00u0wi0.jpg',
+                watchLink: 'https://youtu.be/你的链接2'
+            },
+            3: {
+                title: 'Beat Beat',
+                subtitle: ' ₩ 0 + 1 beat',
+                info: [
+                    ['Volume', '50 mL'],
+                    ['State', 'Liquid · 摇匀后使用'],
+                    ['Effect', '加速心跳至 BPM 128，不可逆'],
+                    ['Delivery', 'Free if you say "Beat!" 🥁'],
+                    ['Return', 'No returns — rhythm started'],
+                    ['Payment', 'smile only']
+                ],
+                img: '006YIJCWgy1hx3dg3bb2aj30u00u00zy.jpg',
+                watchLink: 'https://youtu.be/你的链接3'
+            },
+            4: {
+                title: 'Plot Twist',
+                subtitle: ' ₩ 0 + 1 twist',
+                info: [
+                    ['Volume', '50 mL'],
+                    ['State', 'Liquid · 静置后分层'],
+                    ['Effect', '静置 5 秒后出现意想不到的沉淀物'],
+                    ['Delivery', 'Free if you say "Twist!" 🌀'],
+                    ['Return', 'No returns — embrace the twist'],
+                    ['Payment', 'smile only']
+                ],
+                img: '006YIJCWgy1hx3dg2srhbj30u00u0q6i.jpg',
+                watchLink: 'https://youtu.be/你的链接4'
+            },
+            5: {
+                title: 'Love Me Like This',
+                subtitle: ' ₩ 0 + 1 hug',
+                info: [
+                    ['Volume', '50 mL'],
+                    ['State', 'Liquid · 避光保存'],
+                    ['Effect', '接触后产生强烈 “想被爱” 的错觉'],
+                    ['Delivery', 'Free if you say "Love!" 💕'],
+                    ['Return', 'No returns — love is forever'],
+                    ['Payment', 'smile only']
+                ],
+                img: '006YIJCWgy1hx3dg2fxmwj30u00u0jue.jpg',
+                watchLink: 'https://youtu.be/你的链接5'
+            },
+            6: {
+                title: 'Young Dumb Stupid',
+                subtitle: ' ₩ 0 + 1 smile',
+                info: [
+                    ['Volume', '50 mL'],
+                    ['State', 'Gas · 易挥发'],
+                    ['Effect', '吸入后智商暂时归零，效果持续 3 分钟'],
+                    ['Delivery', 'Free if you say "Stupid!" 😜'],
+                    ['Return', 'No returns — youth doesn\'t come back'],
+                    ['Payment', 'smile only']
+                ],
+                img: '006YIJCWgy1hx3dg1myq8j30u00u0n0d.jpg',
+                watchLink: 'https://youtu.be/你的链接6'
+            }
+        };
+
+        // ===== 获取 URL 参数 =====
+        const urlParams = new URLSearchParams(window.location.search);
+        const trackId = urlParams.get('track') || '1';
+
+        // ===== 渲染数据 =====
+        const data = trackData[trackId] || trackData[1];
+
+        // 设置图片、标题、副标题、按钮链接
+        document.getElementById('productImage').src = data.img;
+        document.getElementById('productTitle').textContent = data.title;
+        document.getElementById('productSub').textContent = data.subtitle;
+        document.getElementById('watchBtn').href = data.watchLink;
+
+        // 渲染 info grid
+        const infoContainer = document.getElementById('productInfo');
+        infoContainer.innerHTML = '';
+        data.info.forEach(row => {
+            const label = document.createElement('span');
+            label.className = 'label';
+            label.textContent = row[0];
+            const value = document.createElement('span');
+            value.className = 'value';
+            value.innerHTML = row[1];
+            infoContainer.appendChild(label);
+            infoContainer.appendChild(value);
+        });
+    </script>
+
+</body>
+</html>

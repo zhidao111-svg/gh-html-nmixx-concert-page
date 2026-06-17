@@ -1,0 +1,1513 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="NMIXX 2nd Fan Concert Macau 2025 - 饭拍影像记录">
+    <title>NMIXX | 2nd Fan Concert Macau 2025 - 饭拍影像记录</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+       /* =========================
+   ① 全局变量区（主题色 / 阴影 / 动画速度）
+   作用：统一管理全站配色和常用参数
+   改颜色、风格 → 先看这里
+   ========================= */
+:root {
+    --primary-blue: #0b6cff;      /* 主蓝色（按钮 / 图标） */
+    --secondary-blue: #39c6ff;    /* 辅助蓝（描边 / 高亮） */
+    --light-blue: #eef6ff;        /* 页面背景浅蓝 */
+    --dark-blue: #0847a3;         /* hover 深蓝 */
+    --text-dark: #333;            /* 主文字色 */
+    --text-medium: #555;          /* 次级文字 */
+    --text-light: #777;           /* 说明文字 */
+    --white: #ffffff;
+    --gray-bg: #f8fafd;           /* 灰色卡片背景 */
+    --border-radius: 12px;        /* 圆角统一值 */
+    --box-shadow: 0 10px 30px rgba(11, 108, 255, 0.1);
+    --transition: all 0.3s ease;  /* 动画统一速度 */
+}
+
+/* =========================
+   ② 全局重置
+   作用：清除浏览器默认 margin / padding
+   ========================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+/* =========================
+   ③ 页面主容器
+   作用：控制页面最大宽度 & 居中
+   ========================= */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* =========================
+   ④ body 基础样式
+   作用：整站字体、背景色、行距
+   ========================= */
+body {
+    font-family: "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+    background-color: var(--light-blue);
+    color: var(--text-dark);
+    line-height: 1.6;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* =========================
+   ⑱ 顶部大图 Hero 区域
+   对应 HTML：<div class="hero-nav">
+   优化点：减少高度至120px, 移动端响应式调整
+   ========================= */
+.hero-nav {
+    width: 100%;
+    height: 120px;
+    background-color: var(--light-blue);
+    margin-bottom: -10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+@media (max-width: 768px) {
+    .hero-nav {
+        height: 90px;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-nav {
+        height: 80px;
+    }
+}
+
+/* =========================
+   ⑲ 图片里的"浏览器标题条"
+   优化点：响应式宽度调整, 使用will-change优化动画性能
+   ========================= */
+.browser-bar {
+    width: 720px;
+    max-width: 90%;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 28px;
+    background: rgba(255, 255, 255, 0.55);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-radius: 999px;
+    border: 1px solid rgba(120, 150, 190, 0.45);
+    box-shadow:
+        0 8px 20px rgba(0, 0, 0, 0.14),
+        inset 0 1px 0 rgba(255, 255, 255, 0.65);
+    position: relative;
+    animation: bar-breathe 3s ease-in-out infinite;
+    will-change: opacity, box-shadow;
+}
+
+@media (max-width: 768px) {
+    .browser-bar {
+        height: 56px;
+        padding: 0 24px;
+    }
+}
+
+@media (max-width: 480px) {
+    .browser-bar {
+        height: 48px;
+        padding: 0 20px;
+    }
+}
+
+.browser-bar::after {
+    content: "★";
+    font-size: 24px;
+    position: absolute;
+    right: 26px;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 0.55;
+    color: #555;
+    text-shadow:
+        0 0 4px rgba(255,255,255,0.35),
+        0 0 10px rgba(160,180,255,0.25);
+    transition:
+        opacity 0.18s ease,
+        text-shadow 0.18s ease,
+        filter 0.18s ease;
+    will-change: opacity, text-shadow;
+}
+
+.browser-bar:hover::after {
+    opacity: 0.95;
+    filter: brightness(1.4) contrast(1.15);
+    text-shadow:
+        0 0 6px rgba(255,255,255,0.9),
+        0 0 18px rgba(180,200,255,0.75);
+}
+
+.browser-text {
+    font-family: 'Courier New', Consolas, monospace;
+    font-size: 18px;
+    letter-spacing: 2px;
+    color: #555;
+}
+
+@media (max-width: 768px) {
+    .browser-text {
+        font-size: 16px;
+        letter-spacing: 1.5px;
+    }
+}
+
+@media (max-width: 480px) {
+    .browser-text {
+        font-size: 13px;
+        letter-spacing: 1px;
+    }
+}
+
+@keyframes bar-breathe {
+    0% {
+        opacity: 0.92;
+        box-shadow:
+            0 8px 20px rgba(0,0,0,0.15),
+            inset 0 1px 0 rgba(255,255,255,0.6);
+    }
+    50% {
+        opacity: 1;
+        box-shadow:
+            0 10px 28px rgba(0,0,0,0.22),
+            inset 0 1px 0 rgba(255,255,255,0.8);
+    }
+    100% {
+        opacity: 0.92;
+        box-shadow:
+            0 8px 20px rgba(0,0,0,0.15),
+            inset 0 1px 0 rgba(255,255,255,0.6);
+    }
+}
+
+/* =========================
+   ⑥ 第二行导航栏（HOME / VIDEO / ABOUT）
+   对应 HTML：<nav class="main-nav">
+   优化点：添加sticky定位提高可用性, 简化冗余代码, 改进移动端交互
+   ========================= */
+.main-nav {
+    width: 100%;
+    background: transparent;          /* 彻底透明 */
+    padding: 8px 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.nav-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.nav-menu {
+    display: flex;
+    justify-content: center;
+    gap: 28px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    flex-wrap: wrap;
+}
+
+@media (max-width: 768px) {
+    .nav-menu {
+        gap: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .nav-menu {
+        gap: 12px;
+        justify-content: flex-start;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        padding: 0 8px;
+    }
+}
+
+.nav-item {
+    position: relative;
+    flex-shrink: 0;
+}
+
+.nav-link {
+    display: inline-block;
+    min-width: 10px;
+    text-align: center;
+    padding: 5px 12px;
+    font-family: 'Courier New', Consolas, monospace;
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: 1.4px;
+    text-transform: uppercase;
+    color: #1f2f46;
+    background: #ffffff;  /* ← 这里改为纯白色 */
+    border: 1px solid rgba(31, 47, 70, 0.75);
+    border-radius: 0;
+    text-decoration: none;
+    transition:
+        background 0.25s ease,
+        box-shadow 0.25s ease,
+        transform 0.15s ease;
+    cursor: pointer;
+    user-select: none;
+}
+
+@media (max-width: 768px) {
+    .nav-link {
+        padding: 4px 10px;
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .nav-link {
+        padding: 4px 9px;
+        font-size: 11px;
+        letter-spacing: 1px;
+    }
+}
+
+.nav-link:hover {
+    background: #eef3f8;
+    color: #1f2f46;
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.7),
+        0 2px 4px rgba(0,0,0,0.18);
+}
+
+.nav-link:active {
+    transform: translateY(2px);
+    box-shadow:
+        inset 1px 1px 0 rgba(0,0,0,0.2),
+        inset -1px -1px 0 rgba(255,255,255,0.8);
+}
+
+.nav-link.active {
+    background: #ffffff;
+    border-color: var(--primary-blue);
+    color: var(--primary-blue);
+}
+
+
+/* =========================
+   ⑧ 主标题区域（MACAU·2025）
+   对应 HTML：<section class="main-title">
+   优化点：调整padding响应式, 改进移动端字体大小
+   ========================= */
+.main-title {
+    position: relative;
+    text-align: center;
+    padding: 60px 0 50px;
+    margin-bottom: 40px;
+    min-height: 80vh;   /* 保证至少占视口的 80% */
+    font-family: 
+        "Courier New",
+        Consolas,
+        "Microsoft YaHei UI",
+        "PingFang SC",
+        monospace;
+}
+
+@media (max-width: 768px) {
+    .main-title {
+        padding: 40px 0 30px;
+        margin-bottom: 30px;
+    }
+}
+
+@media (max-width: 480px) {
+    .main-title {
+        padding: 30px 0 25px;
+        margin-bottom: 20px;
+    }
+}
+
+/* MACAU2025 大标题 */
+.main-title h1 {
+    font-size: 3.8rem;
+    margin-bottom: 10px;
+    letter-spacing: 2px;
+    color: #2c3e50;
+    font-weight: 400;
+    line-height: 1.1;
+}
+
+@media (max-width: 768px) {
+    .main-title h1 {
+        font-size: 2.8rem;
+        letter-spacing: 1px;
+    }
+}
+
+@media (max-width: 480px) {
+    .main-title h1 {
+        font-size: 2rem;
+        letter-spacing: 0.5px;
+    }
+}
+
+/* 副标题 */
+.main-title h2 {
+    font-size: 1.2rem;
+    font-weight: 400;
+    letter-spacing: 1.5px;
+    color: #666;
+}
+
+@media (max-width: 768px) {
+    .main-title h2 {
+        font-size: 1rem;
+        letter-spacing: 1px;
+    }
+}
+
+@media (max-width: 480px) {
+    .main-title h2 {
+        font-size: 0.9rem;
+        letter-spacing: 0.5px;
+    }
+}
+
+/* ===== 标题区中间的情绪照片 ===== */
+/* ===== 牌堆容器（原图比例自适应） ===== */
+.title-photo {
+    position: relative;
+    width: 100%;
+    max-width: 600px;          /* 最大宽度，可根据需要调整 */
+    margin: 26px auto 34px;
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.45);
+    backdrop-filter: blur(4px);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.18);
+    overflow: visible;         /* 让卡片可以稍微溢出，更有层次 */
+    /* 高度由图片比例自动撑开，不设固定值 */
+}
+
+/* ===== 每张卡片（牌） ===== */
+.photo-card {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: auto;              /* 高度由宽度和图片比例决定 */
+    border-radius: 18px;
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), 
+                opacity 0.4s ease,
+                box-shadow 0.4s ease;
+    will-change: transform, opacity;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    pointer-events: none;      /* 让点击穿透到按钮 */
+    display: block;
+    /* 图片比例由 img 自身决定，不裁剪 */
+}
+
+/* ===== 左右切换按钮 ===== */
+.photo-nav-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 50px;
+    height: 80px;
+    z-index: 20;
+    cursor: pointer;
+    background: transparent;
+    border: none;
+}
+.left-btn { left: 5px; }
+.right-btn { right: 5px; }
+
+/* 按钮悬停反馈（可选） */
+.photo-nav-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 10px;
+}
+
+/* =========================
+   ⑩ 日期展示（复古按键感）
+   优化点：改为flex-wrap支持移动端折行
+   ========================= */
+.date-display {
+    display: flex;
+    justify-content: center;
+    gap: 28px;
+    margin-top: 40px;
+    flex-wrap: wrap;
+}
+
+@media (max-width: 768px) {
+    .date-display {
+        gap: 20px;
+        margin-top: 30px;
+    }
+}
+
+@media (max-width: 480px) {
+    .date-display {
+        gap: 16px;
+        margin-top: 20px;
+    }
+}
+
+/* 单个日期块 */
+.date-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: 'Courier New', 'Consolas', monospace;
+}
+
+/* 数字按钮 */
+.date-number {
+    width: 70px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Courier New', Consolas, monospace;
+    font-size: 1.3rem;           /* ✅ 改小一点，更精致 */
+    font-weight: 400;            /* ✅ 更细，简约感 */
+    letter-spacing: 2px;         /* ✅ 增加字间距 */
+    color: #1f2f46;
+    background: rgba(255, 255, 255, 0.55);
+    border: 1.4px solid #b7c7d6;
+    border-radius: 50%;
+    box-shadow:
+        0 6px 16px rgba(183, 199, 214, 0.25),
+        inset 0 1px 0 rgba(255,255,255,0.7);
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease,
+        background 0.25s ease;
+    flex-shrink: 0;
+    will-change: transform, box-shadow;
+}
+
+@media (max-width: 768px) {
+    .date-number {
+        width: 65px;
+        height: 48px;
+        font-size: 1.1rem;       /* ✅ 对应调整 */
+    }
+}
+
+@media (max-width: 480px) {
+    .date-number {         
+        width: 60px;
+        height: 45px;
+        font-size: 0.9rem;       /* ✅ 对应调整 */
+    }
+} 
+
+.date-number:hover {
+    transform: scale(1.05);
+    box-shadow:
+        0 8px 20px rgba(183, 199, 214, 0.35),
+        inset 0 1px 0 rgba(255,255,255,0.8);
+}
+
+.date-label {
+    margin-top: 10px;
+    font-family: 'Courier New', Consolas, monospace;
+    font-size: 0.6rem;           /* ✅ 改小一点，更简约 */
+    font-weight: 300;            /* ✅ 更细，和数字统一 */
+    letter-spacing: 3px;         /* ✅ 保留宽松间距 */
+    color: #6b7785;              /* ✅ 保持浅灰色，更柔和 */
+}
+
+@media (max-width: 768px) {
+    .date-label {
+        font-size: 0.55rem;      /* ✅ 对应调整 */
+        letter-spacing: 2.5px;
+    }
+}
+
+@media (max-width: 480px) {
+    .date-label {
+        font-size: 0.5rem;       /* ✅ 对应调整 */
+        letter-spacing: 2px;
+    }
+}
+
+/* =========================
+   ⑪ 视频区域整体卡片
+   对应 HTML：<section class="video-section">
+   优化点：改进padding响应式, 优化移动端展示
+   ========================= */
+.video-section {
+    background-color: var(--white);
+    border-radius: var(--border-radius);
+    padding: 50px 40px;
+    margin: 40px 0;
+    box-shadow: var(--box-shadow);
+}
+
+@media (max-width: 768px) {
+    .video-section {
+        padding: 40px 30px;
+        margin: 30px 0;
+    }
+}
+
+@media (max-width: 480px) {
+    .video-section {
+        padding: 30px 20px;
+        margin: 20px 0;
+        border-radius: 8px;
+    }
+}
+
+/* 标题区 */
+.section-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+@media (max-width: 768px) {
+    .section-header {
+        margin-bottom: 30px;
+    }
+}
+
+@media (max-width: 480px) {
+    .section-header {
+        margin-bottom: 25px;
+    }
+}
+
+.section-header h2 {
+    font-family: 'Courier New', Consolas, monospace;  /* ✅ 新增 */
+    font-size: 2rem;
+    color: #1f2f46;        /* ✅ 改成和歌曲名一样的深灰蓝色 */
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+@media (max-width: 768px) {
+    .section-header h2 {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .section-header h2 {
+        font-size: 1.2rem;
+        gap: 8px;
+    }
+}
+
+.section-header p {
+    color: var(--text-light);
+    max-width: 700px;
+    margin: 0 auto;
+    font-size: 0.95rem;
+}
+
+@media (max-width: 768px) {
+    .section-header p {
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .section-header p {
+        font-size: 0.85rem;
+    }
+}
+
+/* =========================
+   ⑫ 新增：视频卡片列表九宫格布局
+   优化点：PC端3列、768px以下2列、480px以下单列
+   ========================= */
+.video-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-top: 30px;
+}
+
+@media (max-width: 768px) {
+    .video-list {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .video-list {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+}
+
+/* =========================
+   ⑬ 新增：单个视频卡片 - 九宫格商品卡片风格
+   优化点：顶部图片+悬浮播放按钮 + 文字内容 + 底部按钮
+   ========================= */
+/* ===== 卡片整体 ===== */
+.video-card {
+    background: #ffffff;
+    border: 1px solid rgba(31, 47, 70, 0.75);
+    border-radius: 0;
+    overflow: hidden;
+    box-shadow: none;
+    transition: background 0.25s ease, box-shadow 0.25s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.video-card:hover {
+    background: #f8fafd;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.7), 0 2px 4px rgba(0,0,0,0.18);
+}
+
+/* ===== 卡片封面（淡蓝像素韩系简约风） ===== */
+.video-card-image {
+    position: relative;
+    width: 100%;
+    padding-bottom: 100%;          /* 保持正方形 */
+    background: #eef6ff;           /* 淡蓝色背景（和页面背景一致） */
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 2px solid rgba(31, 47, 70, 0.15); /* 像素感分割线 */
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.8); /* 内发光，增加层次 */
+}
+
+/* 隐藏原有的 img（占位图） */
+.video-card-image img {
+    display: none;
+}
+
+/* 用伪元素显示歌曲名称（韩系简约风格） */
+.video-card-image::after {
+    content: attr(data-title);      /* 从 HTML 的 data-title 属性读取 */
+    font-family: 'Courier New', Consolas, monospace;
+    font-size: 1.2rem;
+    font-weight: 400;
+    letter-spacing: 0.5px;
+    color: #2c3e50;
+    text-transform: uppercase;
+    opacity: 0.7;
+    padding: 8px 16px;
+    border: 1.5px solid rgba(31, 47, 70, 0.2);
+    border-radius: 0;              /* 直角，像素感 */
+    background: rgba(255,255,255,0.5);
+    box-shadow: 2px 2px 0 rgba(0,0,0,0.05);
+    image-rendering: pixelated;    /* 像素感渲染（仅对图片有效，但留着无妨） */
+}
+
+.video-card-image::after {
+    content: "";     /* 留空，不显示任何内容 */
+    display: none;   /* 或者直接隐藏整个伪元素 */
+}
+
+/* ===== 卡片内容区 ===== */
+.video-card-content {
+    padding: 20px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ===== 卡片标题（导航栏风格） ===== */
+.video-card-title {
+    font-family: 'Courier New', Consolas, monospace;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    color: #1f2f46;
+    margin-bottom: 8px;
+    line-height: 1.3;
+}
+
+/* ===== 卡片描述（导航栏副文本风格） ===== */
+.video-card-desc {
+    font-family: 'Courier New', Consolas, monospace;
+    font-size: 0.75rem;
+    color: #777;
+    margin-bottom: 16px;
+    flex-grow: 1;
+    line-height: 1.4;
+    letter-spacing: 0.5px;
+}
+
+/* ===== 底部按钮（和导航链接一致） ===== */
+.video-link {
+    display: inline-block;
+    padding: 5px 12px;
+    font-family: 'Courier New', Consolas, monospace;
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: 1.4px;
+    text-transform: uppercase;
+    color: #1f2f46;                 /* 导航栏默认文字颜色 */
+    background: #ffffff;            /* 白色背景 */
+    border: 1px solid rgba(31, 47, 70, 0.75);
+    border-radius: 0;
+    text-decoration: none;
+    transition: background 0.25s ease, box-shadow 0.25s ease;
+    cursor: pointer;
+    user-select: none;
+    text-align: center;
+    align-self: center;             /* ✅ 改为居中 */
+    width: auto;                    /* 自适应宽度 */
+}
+
+.video-link:hover {
+    background: #eef3f8;            /* 悬停变灰，同导航 */
+    color: #1f2f46;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.7), 0 2px 4px rgba(0,0,0,0.18);
+}
+
+.video-link:active {
+    transform: translateY(2px);
+    box-shadow: inset 1px 1px 0 rgba(0,0,0,0.2), inset -1px -1px 0 rgba(255,255,255,0.8);
+}
+
+/* ===== 移动端适配 ===== */
+@media (max-width: 768px) {
+    .video-card-title {
+        font-size: 0.8rem;
+    }
+    .video-card-desc {
+        font-size: 0.7rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .video-card-title {
+        font-size: 0.75rem;
+    }
+    .video-card-desc {
+        font-size: 0.65rem;
+    }
+    .video-link {
+        padding: 6px 14px;
+        font-size: 0.8rem;
+    }
+}
+
+/* =========================
+   ⑮ 关于演出区域
+   优化点：响应式padding和border-radius
+   ========================= */
+.about-section {
+    background-color: var(--white);
+    border-radius: var(--border-radius);
+    padding: 50px 40px;
+    margin: 40px 0;
+    box-shadow: var(--box-shadow);
+}
+
+@media (max-width: 768px) {
+    .about-section {
+        padding: 40px 30px;
+        margin: 30px 0;
+    }
+}
+
+@media (max-width: 480px) {
+    .about-section {
+        padding: 30px 20px;
+        margin: 20px 0;
+        border-radius: 8px;
+    }
+}
+
+.info-box {
+    background: var(--gray-bg);
+    border-radius: var(--border-radius);
+    padding: 25px;
+    margin: 20px 0;
+    border-left: 4px solid #2c3e50;
+    transition: var(--transition);
+    will-change: transform, box-shadow;
+}
+
+@media (max-width: 768px) {
+    .info-box {
+        padding: 22px;
+        margin: 18px 0;
+    }
+}
+
+@media (max-width: 480px) {
+    .info-box {
+        padding: 20px;
+        margin: 16px 0;
+    }
+}
+
+.info-box:hover {
+    box-shadow: 0 4px 12px rgba(44, 62, 80, 0.08);
+    transform: translateX(2px);
+}
+
+.info-box h3 {
+    color: #2c3e50;
+    margin-bottom: 10px;
+    font-size: 1.1rem;
+}
+
+@media (max-width: 768px) {
+    .info-box h3 {
+        font-size: 1.05rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .info-box h3 {
+        font-size: 1rem;
+    }
+}
+
+.info-box p {
+    color: var(--text-medium);
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+    .info-box p {
+        font-size: 0.93rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .info-box p {
+        font-size: 0.9rem;
+    }
+}
+
+/* =========================
+   ⑰ 页脚区域
+   新增：改进样式与响应式设计
+   ========================= */
+footer {
+    background: rgba(255, 255, 255, 0.55);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
+    padding: 40px 0;
+    margin-top: 60px;
+}
+
+@media (max-width: 768px) {
+    footer {
+        padding: 35px 0;
+        margin-top: 50px;
+    }
+}
+
+@media (max-width: 480px) {
+    footer {
+        padding: 30px 0;
+        margin-top: 40px;
+    }
+}
+
+.footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    text-align: center;
+}
+
+.footer-content h3 {
+    font-size: 1.1rem;
+    color: #2c3e50;
+    margin-bottom: 20px;
+}
+
+@media (max-width: 768px) {
+    .footer-content h3 {
+        font-size: 1.05rem;
+        margin-bottom: 18px;
+    }
+}
+
+@media (max-width: 480px) {
+    .footer-content h3 {
+        font-size: 1rem;
+        margin-bottom: 15px;
+    }
+}
+
+.footer-links {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+@media (max-width: 768px) {
+    .footer-links {
+        gap: 25px;
+    }
+}
+
+@media (max-width: 480px) {
+    .footer-links {
+        gap: 20px;
+    }
+}
+
+.footer-links a {
+    color: var(--primary-blue);
+    text-decoration: none;
+    transition: var(--transition);
+    font-size: 0.95rem;
+}
+
+.footer-links a:hover {
+    color: var(--dark-blue);
+    text-decoration: underline;
+}
+
+.copyright {
+    color: var(--text-light);
+    font-size: 0.85rem;
+}
+
+@media (max-width: 480px) {
+    .copyright {
+        font-size: 0.8rem;
+    }
+}
+
+/* =========================
+   ⑯ 备用动画（目前没用到）
+   ========================= */
+@keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+}
+
+@keyframes bubble-glow {
+    0% {
+        box-shadow: 
+            0 0 15px rgba(168, 208, 230, 0.4),
+            0 5px 20px rgba(168, 208, 230, 0.3),
+            inset 0 0 30px rgba(168, 208, 230, 0.1);
+    }
+    100% {
+        box-shadow: 
+            0 0 20px rgba(168, 208, 230, 0.6),
+            0 8px 25px rgba(168, 208, 230, 0.4),
+            inset 0 0 40px rgba(168, 208, 230, 0.15);
+    }
+}
+
+/* =========================
+   ⑱ 性能优化
+   新增：减少重排重绘, 支持用户reduce-motion偏好
+   ========================= */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* 暗黑模式支持 */
+@media (prefers-color-scheme: dark) {
+    body {
+        background-color: #1a1a2e;
+        color: #e0e0e0;
+    }
+    
+    .video-section,
+    .about-section {
+        background-color: #2a2a3e;
+    }
+    
+    .info-box {
+        background-color: #333344;
+    }
+    
+    .video-card {
+        background-color: #2a2a3e;
+    }
+
+    .hidden {
+    display: none !important;
+    } 
+}
+
+/* ===== 外层容器 ===== */
+.photo-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: -20px;              /* ✅ 负值让翅膀嵌入图片边缘，更贴合 */
+    max-width: 900px;
+    margin: 26px auto 34px;
+    position: relative;
+}
+
+/* ===== 图片容器 ===== */
+.title-photo {
+    flex-shrink: 0;
+    max-width: 420px;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.18);
+}
+
+.title-photo img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+/* ===== 左右翅膀（独立按钮） ===== */
+.wing-btn {
+    width: 180px;            /* 控制翅膀大小，可调 */
+    height: auto;
+    flex-shrink: 0;
+    cursor: pointer;
+    opacity: 0.75;
+    transition: transform 0.25s ease, opacity 0.25s ease, filter 0.25s ease;
+}
+
+/* 悬停效果：放大 + 变亮 + 发光 */
+.wing-btn:hover {
+    transform: scale(1.1);
+    opacity: 1;
+    filter: drop-shadow(0 0 12px rgba(31, 47, 70, 0.4));
+}
+
+/* 点击效果：下沉 */
+.wing-btn:active {
+    transform: scale(0.92);
+    opacity: 0.6;
+}
+
+/* 左翅膀可以加一点专属效果（可选） */
+.wing-left:hover {
+    transform: scale(1.1) translateX(-4px);
+}
+
+/* 右翅膀可以加一点专属效果（可选） */
+.wing-right:hover {
+    transform: scale(1.1) translateX(4px);
+}
+
+.video-card-image img,
+.video-card-image .video-play-button {
+    display: none !important;
+}
+
+    </style>
+</head>
+<body>
+
+    <!-- === 顶部两行导航 === -->
+    
+    <!-- 第一行：浏览器条导航 -->
+    <div class="hero-nav">
+        <div class="browser-bar">
+            <span class="browser-text">MIXX LAB</span>
+        </div>
+    </div>
+
+    <!-- 第二行：导航链接 -->
+    <nav class="main-nav">
+        <div class="nav-container">
+            <ul class="nav-menu">
+<li class="nav-item"><a href="#" class="nav-link active" data-section="home">HOME</a></li>                <li class="nav-item"><a href="#videos" class="nav-link" data-section="videos">STAGE VIDEO</a></li>
+                <li class="nav-item"><a href="#about" class="nav-link" data-section="about">MY CON</a></li>
+                <li class="nav-item"><a href="#home" class="nav-link" data-section="gallery">PHOTO WALL</a></li>
+            </ul>
+        </div>
+    </nav>
+
+<div class="container">
+        <!-- 主标题区域 -->
+        <section class="main-title" id="home">
+
+            <h1>MACAU·2025</h1>
+            <h2>NMIXX 2nd Fan Concert 기록</h2> 
+
+<!-- 外层容器：左翅膀 + 图片 + 右翅膀 -->
+<div class="photo-wrapper">
+    <!-- 左翅膀：点击上一张 -->
+    <svg class="wing-btn wing-left" viewBox="0 0 500 90" onclick="prevImage()">
+        <g stroke="#1f2f46" fill="none" stroke-width="1.2" opacity="0.9">
+            <path d="M 60,45 C 70,40 80,38 90,38 C 100,40 110,45 115,55 C 117,65 113,75 103,80 C 90,85 70,85 55,78 C 45,68 43,55 47,45 Z" />
+            <path d="M 65,50 C 75,47 85,45 95,45 C 105,47 113,53 118,60 C 118,70 110,76 98,80 C 83,80 68,73 60,63 C 60,53 65,50 65,50 Z" />
+            <path d="M 70,55 C 80,52 90,52 98,55 C 103,62 98,70 90,73 C 80,71 73,65 73,58 Z" />
+        </g>
+    </svg>
+
+<div class="title-photo" id="photoStack">
+    <!-- 左右透明切换按钮 -->
+    <div class="photo-nav-btn left-btn" onclick="prevImage()"></div>
+    <div class="photo-nav-btn right-btn" onclick="nextImage()"></div>
+    <!-- 卡片由 JavaScript 动态生成，无需写 img -->
+</div>
+
+    <!-- 右翅膀：点击下一张 -->
+    <svg class="wing-btn wing-right" viewBox="0 0 500 90" onclick="nextImage()">
+        <!-- 直接把左翅膀的 path 复制过来，再用 transform 镜像 -->
+        <g stroke="#1f2f46" fill="none" stroke-width="1.2" opacity="0.9" transform="translate(500,0) scale(-1,1)">
+            <path d="M 60,45 C 70,40 80,38 90,38 C 100,40 110,45 115,55 C 117,65 113,75 103,80 C 90,85 70,85 55,78 C 45,68 43,55 47,45 Z" />
+            <path d="M 65,50 C 75,47 85,45 95,45 C 105,47 113,53 118,60 C 118,70 110,76 98,80 C 83,80 68,73 60,63 C 60,53 65,50 65,50 Z" />
+            <path d="M 70,55 C 80,52 90,52 98,55 C 103,62 98,70 90,73 C 80,71 73,65 73,58 Z" />
+        </g>
+    </svg>
+</div>
+
+            <!-- 日期展示 -->
+            <div class="date-display">
+                <div class="date-item">
+                    <span class="date-number">𝟐𝟎𝟐𝟓</span>
+                    <span class="date-label">𝒀𝑬𝑨𝑹</span>
+                </div>
+                <div class="date-item">
+                    <span class="date-number">𝟎𝟔</span>
+                    <span class="date-label">𝑴𝑶𝑵𝑻𝑯</span>
+                </div>
+                <div class="date-item">
+                    <span class="date-number">𝟐𝟖</span>
+                    <span class="date-label">𝑫𝑨𝒀</span>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 新增：视频区域 - 九宫格卡片布局 -->
+        <!-- 修改说明：
+            1. 改造grid布局：PC端3列、768px以下2列、480px以下单列
+            2. 卡片结构改为：顶部图片+悬浮播放按钮 + 中间标题和描述 + 底部按钮
+            3. 包含全部19首歌曲
+            4. 保留原有导航和主色系，只改布局和卡片样式
+        -->
+        <section class="video-section" id="videos">
+            <div class="section-header">
+                <h2>📸┃shots</h2>
+            </div>
+            
+            <!-- 九宫格卡片容器：PC端3列 -->
+<div class="video-list">
+    <!-- 第1首：Run For Roses -->
+    <div class="video-card">
+        <div class="video-card-image">
+            <img src="https://via.placeholder.com/300x300?text=Run+For+Roses" alt="Run For Roses">
+        </div>
+        <div class="video-card-content">
+            <h3 class="video-card-title">Run For Roses</h3>
+            <p class="video-card-desc">💭</p>
+            <a href="purchase.html?track=1" target="_blank" class="video-link">LIVE</a>
+        </div>
+    </div>
+
+    <!-- 第2首：Sonar -->
+    <div class="video-card">
+        <div class="video-card-image">
+            <img src="https://via.placeholder.com/300x300?text=Sonar" alt="Sonar">
+        </div>
+        <div class="video-card-content">
+            <h3 class="video-card-title">Sonar</h3>
+            <p class="video-card-desc">💭</p>
+            <a href="purchase.html?track=2" target="_blank" class="video-link">LIVE</a>
+        </div>
+    </div>
+
+    <!-- 第3首：Beat Beat -->
+    <div class="video-card">
+        <div class="video-card-image">
+            <img src="https://via.placeholder.com/300x300?text=Beat+Beat" alt="Beat Beat">
+        </div>
+        <div class="video-card-content">
+            <h3 class="video-card-title">Beat Beat</h3>
+            <p class="video-card-desc">💭</p>
+            <a href="purchase.html?track=3" target="_blank" class="video-link">LIVE</a>
+        </div>
+    </div>
+
+    <!-- 第4首：Plot Twist -->
+    <div class="video-card">
+        <div class="video-card-image">
+            <img src="https://via.placeholder.com/300x300?text=Plot+Twist" alt="Plot Twist">
+        </div>
+        <div class="video-card-content">
+            <h3 class="video-card-title">Plot Twist</h3>
+            <p class="video-card-desc">💭</p>
+            <a href="purchase.html?track=4" target="_blank" class="video-link">LIVE</a>
+        </div>
+    </div>
+
+    <!-- 第5首：Love Me Like This -->
+    <div class="video-card">
+        <div class="video-card-image">
+            <img src="https://via.placeholder.com/300x300?text=Love+Me+Like+This" alt="Love Me Like This">
+        </div>
+        <div class="video-card-content">
+            <h3 class="video-card-title">Love Me Like This</h3>
+            <p class="video-card-desc">💭</p>
+            <a href="purchase.html?track=5" target="_blank" class="video-link">LIVE</a>
+        </div>
+    </div>
+
+    <!-- 第6首：Young Dumb Stupid -->
+    <div class="video-card">
+        <div class="video-card-image">
+            <img src="https://via.placeholder.com/300x300?text=Young+Dumb+Stupid" alt="Young Dumb Stupid">
+        </div>
+        <div class="video-card-content">
+            <h3 class="video-card-title">Young Dumb Stupid</h3>
+            <p class="video-card-desc">💭</p>
+            <a href="purchase.html?track=6" target="_blank" class="video-link">LIVE</a>
+        </div>
+    </div>
+</div>
+        </section>
+        
+        <!-- 关于演出区域 -->
+        <section class="about-section" id="about">
+            <div class="section-header">
+                <h2>About the Concert</h2>
+            </div>
+            
+            <div class="info-box">
+                <h3>💭 My Experience</h3>
+                <p>𝟐𝟎𝟐𝟓.𝟔.𝟐𝟖 ┃ 第一次见到NMIXX 6个特别有诚意又有上进心的女孩们 🥹 </p>
+            </div>
+            
+            <div class="info-box">
+                <h3>📝 record purpose</h3>
+                <p>本页面用于整理当日舞台的饭拍影像、成员表现与个人记录～为无法到场的NSWER提供观看资源，也为到场NSWER留下美好回忆 💭</p>
+            </div>
+            
+            <div class="info-box">
+                <h3>⏳ still organizing...</h3>
+                <p>全景舞台, special stages, 成员们的每个闪耀瞬间 — 都还在慢慢整理中 ✨<br>Just wait a little more until we collect all the moments 🫶</p>            </div>
+        </section>
+        
+        <!-- 页脚 -->
+        <footer>
+            <div class="footer-content">
+                <h3>MIXX LAB</h3>
+                <p>2025.6.28 · MACAU · 함께한 순간</p>
+                <p class="copyright">本页面为粉丝非官方整理，所有视频版权归原作者所有 © 2025</p>
+            </div>
+        </footer>
+    </div>
+
+<script>
+    // ===== 强制 HOME 高亮（页面加载时） =====
+    (function() {
+        // 先清除所有 active
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.classList.remove('active');
+        });
+        // 给 HOME 加上 active
+        document.querySelector('.nav-link[data-section="home"]')?.classList.add('active');
+    })();
+
+    // ===== 导航链接活跃状态更新（使用 data-section 匹配） =====
+    (function() {
+        const navLinks = document.querySelectorAll('.nav-link');
+        const sections = document.querySelectorAll('section[id]');
+
+        // 处理导航链接点击
+        navLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                navLinks.forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // 使用 Intersection Observer 滚动监听
+        if ('IntersectionObserver' in window) {
+            const observerOptions = {
+            threshold: 0.3
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        navLinks.forEach(link => {
+                            link.classList.remove('active');
+                            // ✅ 用 data-section 匹配
+                            if (link.getAttribute('data-section') === entry.target.getAttribute('id')) {
+                                link.classList.add('active');
+                            }
+                        });
+                    }
+                });
+            }, observerOptions);
+
+            sections.forEach(section => observer.observe(section));
+        } else {
+            // 降级方案：传统滚动监听
+            window.addEventListener('scroll', updateActiveLink, { passive: true });
+        }
+
+        function updateActiveLink() {
+            const scrollY = window.scrollY;
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                
+                if (scrollY >= sectionTop - 200 && scrollY < sectionTop + sectionHeight) {
+                    navLinks.forEach(link => link.classList.remove('active'));
+                    // ✅ 用 data-section 匹配
+                    document.querySelector(`a[data-section="${section.getAttribute('id')}"]`)?.classList.add('active');
+                }
+            });
+        }
+    })();
+</script>
+    
+    <script>
+    // ===== 图片切换功能 =====
+    // ===== 图片列表 =====
+const imageList = [
+    '20250628_213715.jpg',
+    '20250628_213730.jpg',
+    '20250628_212622.jpg',
+    '20250628_212720.jpg',
+    '20250628_212508.jpg',
+
+];
+let currentIndex = 0;
+
+const container = document.getElementById('photoStack');
+let cards = [];
+const MAX_VISIBLE = 5;          // 叠放卡片数量（等于图片总数）
+
+// ===== 初始化卡片 =====
+function initCards() {
+    // 保留按钮
+    const buttons = container.querySelectorAll('.photo-nav-btn');
+    container.innerHTML = '';
+    buttons.forEach(btn => container.appendChild(btn));
+
+    // 创建卡片
+    for (let i = 0; i < MAX_VISIBLE; i++) {
+        const img = document.createElement('img');
+        img.className = 'photo-card';
+        img.draggable = false;
+        img.style.width = '100%';
+        img.style.height = 'auto';
+        container.appendChild(img);
+        cards.push(img);
+    }
+    updateCards();
+}
+
+// ===== 更新所有卡片 =====
+function updateCards() {
+    const total = imageList.length;
+    if (total === 0) return;
+
+    for (let i = 0; i < MAX_VISIBLE; i++) {
+        const imgIndex = (currentIndex - i + total) % total;
+        const card = cards[i];
+        card.src = imageList[imgIndex];
+
+        // 🃏 打牌感参数（调大偏移和旋转）
+        const offsetX = i * 25;      // 向右露出 25px（原来12）
+        const offsetY = i * 18;      // 向下露出 18px（原来8）
+        const rotate = i * 4;        // 每张旋转 4°（原来1.8）
+        const scale = 1 - i * 0.05;  // 逐层缩小 5%（原来2.5%）
+
+        card.style.transform = `translate(${offsetX}px, ${offsetY}px) rotate(${rotate}deg) scale(${scale})`;
+        card.style.zIndex = MAX_VISIBLE - i;
+        card.style.opacity = 1 - i * 0.15;  // 透明度递减保留
+        card.style.boxShadow = i === 0 
+            ? '0 8px 25px rgba(0,0,0,0.3)' 
+            : '0 4px 12px rgba(0,0,0,0.1)';
+    }
+
+    // 动态设置容器高度（保持不变）
+    const firstCard = cards[0];
+    if (firstCard) {
+        const setHeight = () => {
+            container.style.height = firstCard.offsetHeight + 'px';
+        };
+        if (firstCard.complete && firstCard.naturalHeight) {
+            setHeight();
+        } else {
+            firstCard.onload = setHeight;
+        }
+        setTimeout(setHeight, 200);
+    }
+}
+
+// ===== 上一张 =====
+function prevImage() {
+    if (imageList.length === 0) return;
+    currentIndex = (currentIndex - 1 + imageList.length) % imageList.length;
+    cards.forEach(card => card.style.transition = 'transform 0.3s ease, opacity 0.3s ease');
+    updateCards();
+    setTimeout(() => {
+        cards.forEach(card => card.style.transition = 'transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.4s ease');
+    }, 300);
+}
+
+// ===== 下一张 =====
+function nextImage() {
+    if (imageList.length === 0) return;
+    currentIndex = (currentIndex + 1) % imageList.length;
+    cards.forEach(card => card.style.transition = 'transform 0.3s ease, opacity 0.3s ease');
+    updateCards();
+    setTimeout(() => {
+        cards.forEach(card => card.style.transition = 'transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.4s ease');
+    }, 300);
+}
+
+// ===== 键盘左右键 =====
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'ArrowLeft') prevImage();
+    if (e.key === 'ArrowRight') nextImage();
+});
+
+// ===== 窗口改变时重新计算（可选） =====
+let resizeTimer;
+window.addEventListener('resize', function() {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => updateCards(), 200);
+});
+
+// ===== 暴露函数给 HTML onclick =====
+window.prevImage = prevImage;
+window.nextImage = nextImage;
+
+// ===== 启动 =====
+initCards();
+</script>
+</body>
+</html>
