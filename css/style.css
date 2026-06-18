@@ -1,0 +1,1346 @@
+   /* =========================
+   ① 全局变量区（主题色 / 阴影 / 动画速度）
+   作用：统一管理全站配色和常用参数
+   改颜色、风格 → 先看这里
+   ========================= */
+:root {
+    --primary-blue: #0b6cff;      /* 主蓝色（按钮 / 图标） */
+    --secondary-blue: #39c6ff;    /* 辅助蓝（描边 / 高亮） */
+    --light-blue: #eef6ff;        /* 页面背景浅蓝 */
+    --dark-blue: #0847a3;         /* hover 深蓝 */
+    --text-dark: #333;            /* 主文字色 */
+    --text-medium: #555;          /* 次级文字 */
+    --text-light: #777;           /* 说明文字 */
+    --white: #ffffff;
+    --gray-bg: #f8fafd;           /* 灰色卡片背景 */
+    --border-radius: 12px;        /* 圆角统一值 */
+    --box-shadow: 0 10px 30px rgba(11, 108, 255, 0.1);
+    --transition: all 0.3s ease;  /* 动画统一速度 */
+}
+
+/* =========================
+   ② 全局重置
+   作用：清除浏览器默认 margin / padding
+   ========================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+/* =========================
+   ③ 页面主容器
+   作用：控制页面最大宽度 & 居中
+   ========================= */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* =========================
+   ④ body 基础样式
+   作用：整站字体、背景色、行距
+   ========================= */
+body {
+    font-family: "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+    background-color: var(--light-blue);
+    color: var(--text-dark);
+    line-height: 1.6;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* =========================
+   ⑱ 顶部大图 Hero 区域
+   对应 HTML：<div class="hero-nav">
+   优化点：减少高度至120px, 移动端响应式调整
+   ========================= */
+.hero-nav {
+    width: 100%;
+    height: 120px;
+    background-color: var(--light-blue);
+    margin-bottom: -10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+@media (max-width: 768px) {
+    .hero-nav {
+        height: 90px;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-nav {
+        height: 80px;
+    }
+}
+
+/* =========================
+   ⑲ 图片里的"浏览器标题条"
+   优化点：响应式宽度调整, 使用will-change优化动画性能
+   ========================= */
+.browser-bar {
+    width: 720px;
+    max-width: 90%;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 28px;
+    background: rgba(255, 255, 255, 0.55);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-radius: 999px;
+    border: 1px solid rgba(120, 150, 190, 0.45);
+    box-shadow:
+        0 8px 20px rgba(0, 0, 0, 0.14),
+        inset 0 1px 0 rgba(255, 255, 255, 0.65);
+    position: relative;
+    animation: bar-breathe 4s ease-in-out infinite;
+    will-change: opacity, box-shadow, transform;     /* 增加 transform */
+}
+
+@media (max-width: 768px) {
+    .browser-bar {
+        height: 56px;
+        padding: 0 24px;
+    }
+}
+
+@media (max-width: 480px) {
+    .browser-bar {
+        height: 48px;
+        padding: 0 20px;
+    }
+}
+
+.browser-bar::after {
+    content: "★";
+    font-size: 24px;
+    position: absolute;
+    right: 26px;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 0.55;
+    color: #555;
+    text-shadow:
+        0 0 4px rgba(255,255,255,0.35),
+        0 0 10px rgba(160,180,255,0.25);
+    transition:
+        opacity 0.18s ease,
+        text-shadow 0.18s ease,
+        filter 0.18s ease;
+    will-change: opacity, text-shadow;
+}
+
+.browser-bar:hover::after {
+    opacity: 0.95;
+    filter: brightness(1.4) contrast(1.15);
+    text-shadow:
+        0 0 6px rgba(255,255,255,0.9),
+        0 0 18px rgba(180,200,255,0.75);
+}
+
+.browser-text {
+    font-family: 'Courier New', Consolas, monospace;
+    font-size: 18px;
+    letter-spacing: 2px;
+    color: #555;
+}
+
+@media (max-width: 768px) {
+    .browser-text {
+        font-size: 16px;
+        letter-spacing: 1.5px;
+    }
+}
+
+@media (max-width: 480px) {
+    .browser-text {
+        font-size: 13px;
+        letter-spacing: 1px;
+    }
+}
+
+@keyframes bar-breathe {
+    0%   { opacity: 0.88; box-shadow: 0 8px 20px rgba(0,0,0,0.08); transform: scale(1) translateY(0); }
+    50%  { opacity: 1; box-shadow: 0 12px 32px rgba(0,0,0,0.14); transform: scale(1.01) translateY(-2px); }
+    100% { opacity: 0.88; box-shadow: 0 8px 20px rgba(0,0,0,0.08); transform: scale(1) translateY(0); }
+}
+
+
+
+/* =========================
+   ⑥ 第二行导航栏（HOME / VIDEO / ABOUT）
+   对应 HTML：<nav class="main-nav">
+   优化点：添加sticky定位提高可用性, 简化冗余代码, 改进移动端交互
+   ========================= */
+.main-nav {
+    width: 100%;
+    background: transparent;          /* 彻底透明 */
+    padding: 8px 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    animation: nav-breathe 5s ease-in-out infinite;   
+}
+
+.nav-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.nav-menu {
+    display: flex;
+    justify-content: center;
+    gap: 28px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    flex-wrap: wrap;
+}
+
+@media (max-width: 768px) {
+    .nav-menu {
+        gap: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .nav-menu {
+        gap: 12px;
+        justify-content: flex-start;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        padding: 0 8px;
+    }
+}
+
+.nav-item {
+    position: relative;
+    flex-shrink: 0;
+}
+
+.nav-link {
+    display: inline-block;
+    min-width: 10px;
+    text-align: center;
+    padding: 5px 12px;
+    font-family: 'Courier New', Consolas, monospace;
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: 1.4px;
+    text-transform: uppercase;
+    color: #1f2f46;
+    background: #ffffff;  /* ← 这里改为纯白色 */
+    border: 1px solid rgba(31, 47, 70, 0.75);
+    border-radius: 0;
+    text-decoration: none;
+    transition:
+        background 0.25s ease,
+        box-shadow 0.25s ease,
+        transform 0.15s ease;
+    cursor: pointer;
+    user-select: none;
+}
+
+@media (max-width: 768px) {
+    .nav-link {
+        padding: 4px 10px;
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .nav-link {
+        padding: 4px 9px;
+        font-size: 11px;
+        letter-spacing: 1px;
+    }
+}
+
+.nav-link:hover {
+    background: #eef3f8;
+    color: #1f2f46;
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.7),
+        0 2px 4px rgba(0,0,0,0.18);
+}
+
+.nav-link:active {
+    transform: translateY(2px);
+    box-shadow:
+        inset 1px 1px 0 rgba(0,0,0,0.2),
+        inset -1px -1px 0 rgba(255,255,255,0.8);
+}
+
+.nav-link.active {
+    background: #ffffff;
+    border-color: var(--primary-blue);
+    color: var(--primary-blue);
+}
+
+
+/* =========================
+   ⑧ 主标题区域（MACAU·2025）
+   对应 HTML：<section class="main-title">
+   优化点：调整padding响应式, 改进移动端字体大小
+   ========================= */
+.main-title {
+    position: relative;
+    text-align: center;
+    padding: 60px 0 50px;
+    margin-bottom: 40px;
+    min-height: 80vh;   /* 保证至少占视口的 80% */
+    font-family: 
+        "Courier New",
+        Consolas,
+        "Microsoft YaHei UI",
+        "PingFang SC",
+        monospace;
+}
+
+@media (max-width: 768px) {
+    .main-title {
+        padding: 40px 0 30px;
+        margin-bottom: 30px;
+    }
+}
+
+@media (max-width: 480px) {
+    .main-title {
+        padding: 30px 0 25px;
+        margin-bottom: 20px;
+    }
+}
+
+/* MACAU2025 大标题 */
+.main-title h1 {
+    font-size: 3.8rem;
+    margin-bottom: 10px;
+    letter-spacing: 2px;
+    color: #2c3e50;
+    font-weight: 400;
+    line-height: 1.1;
+}
+
+@media (max-width: 768px) {
+    .main-title h1 {
+        font-size: 2.8rem;
+        letter-spacing: 1px;
+    }
+}
+
+@media (max-width: 480px) {
+    .main-title h1 {
+        font-size: 2rem;
+        letter-spacing: 0.5px;
+    }
+}
+
+/* 副标题 */
+.main-title h2 {
+    font-size: 1.2rem;
+    font-weight: 400;
+    letter-spacing: 1.5px;
+    color: #666;
+}
+
+@media (max-width: 768px) {
+    .main-title h2 {
+        font-size: 1rem;
+        letter-spacing: 1px;
+    }
+}
+
+@media (max-width: 480px) {
+    .main-title h2 {
+        font-size: 0.9rem;
+        letter-spacing: 0.5px;
+    }
+}
+
+/* 拍立得拼贴容器 - 必须用 position:relative + padding-bottom 撑高 */
+/* ===== 照片墙外层 ===== */
+.photo-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;                    /* 翅膀与照片间距 */
+    max-width: 1100px;            /* 整体变宽，容纳翅膀 */
+    margin: 80px auto;
+    padding: 0 15px;
+}
+
+/* ===== 照片墙容器 — 固定高度，让图片撑满 ===== */
+.title-photo {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    width: 78%;
+    max-width: 880px;
+    height: 480px;
+    padding: 8px 12px;
+    background: transparent;    /* ✅ 改成透明，或删掉这一行 */
+    border-radius: 6px;
+    box-sizing: border-box;
+}
+
+/* ===== 所有图片 — 高度由容器决定 ===== */
+.photo-card {
+    height: 100%;
+    width: auto;
+    object-fit: contain;
+    border: none;
+    border-radius: 0;
+    background: transparent;      /* ✅ 添加这一行，去掉白色背景 */
+    transition: all 0.4s ease;
+    flex-shrink: 0;
+    flex-grow: 0;
+    margin-right: -25px;
+    transition: opacity 0.4s ease, transform 0.4s ease;
+    opacity: 1;
+}
+
+/* ===== 左右子图（三图方案） ===== */
+.photo-card.thumb-l,
+.photo-card.thumb-r {
+    filter: blur(4px);           /* 虚化程度，可调 */
+    opacity: 1;
+    transform: scale(0.9);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    z-index: 1;
+}
+
+/* ===== 主图 ===== */
+.photo-card.main {
+    filter: blur(0);
+    opacity: 1;
+    transform: scale(1.15);
+    box-shadow: 0 6px 28px rgba(0,0,0,0.30);
+    z-index: 5;
+    background: transparent !important;
+}
+
+/* ===== 子图层叠虚化 ===== */
+/* ===== 子图统一比例（4:3） ===== */
+.photo-card.thumb-l1,
+.photo-card.thumb-l2,
+.photo-card.thumb-r1,
+.photo-card.thumb-r2 {
+    aspect-ratio: 4 / 3;          /* 强制 4:3 横版 */
+    object-fit: cover;            /* 裁剪填充，不拉伸 */
+}
+
+/* 原有的虚化、缩放样式保持不变，但为了清晰，我帮你合并一下： */
+.photo-card.thumb-l1,
+.photo-card.thumb-r1 {
+    filter: blur(5px);
+    opacity: 0.7;
+    transform: scale(0.95);
+    box-shadow: 0 2px 12px rgba(0,0,0,0.12);
+    z-index: 4;
+}
+
+.photo-card.thumb-l2,
+.photo-card.thumb-r2 {
+    filter: blur(10px);
+    opacity: 0.4;
+    transform: scale(0.85);
+    box-shadow: 0 1px 8px rgba(0,0,0,0.06);
+    z-index: 3;
+}
+
+/* 主图激活状态 */
+.photo-card.main.active {
+    transform: scale(1.15);
+    box-shadow: 0 6px 32px rgba(0,0,0,0.35);
+}
+
+/* ===== 左右切换按钮 ===== */
+.photo-nav-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 50px;
+    height: 80px;
+    z-index: 20;
+    cursor: pointer;
+    background: transparent;
+    border: none;
+}
+.left-btn { left: 5px; }
+.right-btn { right: 5px; }
+
+/* 按钮悬停反馈（可选） */
+.photo-nav-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 10px;
+}
+
+/* ============================================================
+   照片切换动画 — 柔和韩系版（缓慢淡入淡出 + 轻微滑动）
+   ============================================================ */
+
+/* ----- 主图：淡出 + 轻微缩小 ----- */
+@keyframes main-fade-out {
+    0%   { opacity: 1; transform: scale(1.15) translateX(0); filter: blur(0); }
+    100% { opacity: 0; transform: scale(1.05) translateX(0); filter: blur(0); }
+}
+
+/* ----- 主图：淡入 + 恢复大小 ----- */
+@keyframes main-fade-in {
+    0%   { opacity: 0; transform: scale(1.05) translateX(0); filter: blur(0); }
+    100% { opacity: 1; transform: scale(1.15) translateX(0); filter: blur(0); }
+}
+
+/* ----- 左子图：向左滑出 + 淡出 ----- */
+@keyframes thumb-l-out {
+    0%   { opacity: 1; transform: scale(0.9) translateX(0); filter: blur(4px); }
+    100% { opacity: 0; transform: scale(0.85) translateX(-30px); filter: blur(6px); }
+}
+
+/* ----- 右子图：向右滑出 + 淡出 ----- */
+@keyframes thumb-r-out {
+    0%   { opacity: 1; transform: scale(0.9) translateX(0); filter: blur(4px); }
+    100% { opacity: 0; transform: scale(0.85) translateX(30px); filter: blur(6px); }
+}
+
+/* ----- 左子图：从右侧滑入 + 淡入 ----- */
+@keyframes thumb-l-in {
+    0%   { opacity: 0; transform: scale(0.85) translateX(30px); filter: blur(6px); }
+    100% { opacity: 1; transform: scale(0.9) translateX(0); filter: blur(4px); }
+}
+
+/* ----- 右子图：从左侧滑入 + 淡入 ----- */
+@keyframes thumb-r-in {
+    0%   { opacity: 0; transform: scale(0.85) translateX(-30px); filter: blur(6px); }
+    100% { opacity: 1; transform: scale(0.9) translateX(0); filter: blur(4px); }
+}
+
+/* ===== 应用动画的类（JS 调用） ===== */
+.photo-card.main.wave-out {
+    animation: main-fade-out 0.7s ease forwards;
+}
+.photo-card.main.wave-in {
+    animation: main-fade-in 0.7s ease forwards;
+}
+.photo-card.thumb-l.wave-out {
+    animation: thumb-l-out 0.6s ease forwards;
+}
+.photo-card.thumb-r.wave-out {
+    animation: thumb-r-out 0.6s ease forwards;
+}
+.photo-card.thumb-l.wave-in {
+    animation: thumb-l-in 0.6s ease forwards;
+}
+.photo-card.thumb-r.wave-in {
+    animation: thumb-r-in 0.6s ease forwards;
+}
+
+/* =========================
+   ⑩ 日期展示（复古按键感）
+   优化点：改为flex-wrap支持移动端折行
+   ========================= */
+.date-display {
+    display: flex;
+    justify-content: center;
+    gap: 28px;
+    margin-top: 40px;
+    flex-wrap: wrap;
+}
+
+@media (max-width: 768px) {
+    .date-display {
+        gap: 20px;
+        margin-top: 30px;
+    }
+}
+
+@media (max-width: 480px) {
+    .date-display {
+        gap: 16px;
+        margin-top: 20px;
+    }
+}
+
+/* 单个日期块 */
+.date-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: 'Courier New', 'Consolas', monospace;
+}
+
+/* 数字按钮 */
+.date-number {
+    width: 70px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Courier New', Consolas, monospace;
+    font-size: 1.3rem;           /* ✅ 改小一点，更精致 */
+    font-weight: 400;            /* ✅ 更细，简约感 */
+    letter-spacing: 2px;         /* ✅ 增加字间距 */
+    color: #1f2f46;
+    background: rgba(255, 255, 255, 0.55);
+    border: 1.4px solid #b7c7d6;
+    border-radius: 50%;
+    box-shadow:
+        0 6px 16px rgba(183, 199, 214, 0.25),
+        inset 0 1px 0 rgba(255,255,255,0.7);
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease,
+        background 0.25s ease;
+    flex-shrink: 0;
+    will-change: transform, box-shadow;
+}
+
+@media (max-width: 768px) {
+    .date-number {
+        width: 65px;
+        height: 48px;
+        font-size: 1.1rem;       /* ✅ 对应调整 */
+    }
+}
+
+@media (max-width: 480px) {
+    .date-number {         
+        width: 60px;
+        height: 45px;
+        font-size: 0.9rem;       /* ✅ 对应调整 */
+    }
+} 
+
+.date-number:hover {
+    transform: scale(1.05);
+    box-shadow:
+        0 8px 20px rgba(183, 199, 214, 0.35),
+        inset 0 1px 0 rgba(255,255,255,0.8);
+}
+
+.date-label {
+    margin-top: 10px;
+    font-family: 'Courier New', Consolas, monospace;
+    font-size: 0.6rem;           /* ✅ 改小一点，更简约 */
+    font-weight: 300;            /* ✅ 更细，和数字统一 */
+    letter-spacing: 3px;         /* ✅ 保留宽松间距 */
+    color: #6b7785;              /* ✅ 保持浅灰色，更柔和 */
+}
+
+@media (max-width: 768px) {
+    .date-label {
+        font-size: 0.55rem;      /* ✅ 对应调整 */
+        letter-spacing: 2.5px;
+    }
+}
+
+@media (max-width: 480px) {
+    .date-label {
+        font-size: 0.5rem;       /* ✅ 对应调整 */
+        letter-spacing: 2px;
+    }
+}
+
+/* =========================
+   ⑪ 视频区域整体卡片
+   对应 HTML：<section class="video-section">
+   优化点：改进padding响应式, 优化移动端展示
+   ========================= */
+.video-section {
+    background-color: var(--white);
+    border-radius: var(--border-radius);
+    padding: 50px 40px;
+    margin: 40px 0;
+    box-shadow: var(--box-shadow);
+}
+
+@media (max-width: 768px) {
+    .video-section {
+        padding: 40px 30px;
+        margin: 30px 0;
+    }
+}
+
+@media (max-width: 480px) {
+    .video-section {
+        padding: 30px 20px;
+        margin: 20px 0;
+        border-radius: 8px;
+    }
+}
+
+/* 标题区 */
+.section-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+@media (max-width: 768px) {
+    .section-header {
+        margin-bottom: 30px;
+    }
+}
+
+@media (max-width: 480px) {
+    .section-header {
+        margin-bottom: 25px;
+    }
+}
+
+.section-header h2 {
+    font-family: 'Courier New', Consolas, monospace;  /* ✅ 新增 */
+    font-size: 2rem;
+    color: #1f2f46;        /* ✅ 改成和歌曲名一样的深灰蓝色 */
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+@media (max-width: 768px) {
+    .section-header h2 {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .section-header h2 {
+        font-size: 1.2rem;
+        gap: 8px;
+    }
+}
+
+.section-header p {
+    color: var(--text-light);
+    max-width: 700px;
+    margin: 0 auto;
+    font-size: 0.95rem;
+}
+
+@media (max-width: 768px) {
+    .section-header p {
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .section-header p {
+        font-size: 0.85rem;
+    }
+}
+
+/* =========================
+   ⑫ 新增：视频卡片列表九宫格布局
+   优化点：PC端3列、768px以下2列、480px以下单列
+   ========================= */
+.video-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-top: 30px;
+}
+
+@media (max-width: 768px) {
+    .video-list {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .video-list {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+}
+
+/* =========================
+   ⑬ 新增：单个视频卡片 - 九宫格商品卡片风格
+   优化点：顶部图片+悬浮播放按钮 + 文字内容 + 底部按钮
+   ========================= */
+/* ===== 卡片整体 ===== */
+.video-card {
+    background: #ffffff;
+    border: 1px solid rgba(31, 47, 70, 0.75);
+    border-radius: 0;
+    overflow: hidden;
+    box-shadow: none;
+    transition: background 0.25s ease, box-shadow 0.25s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.video-card:hover {
+    background: #f8fafd;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.7), 0 2px 4px rgba(0,0,0,0.18);
+}
+
+/* ===== 卡片封面（淡蓝像素韩系简约风） ===== */
+.video-card-image {
+    position: relative;
+    width: 100%;
+    padding-bottom: 100%;          /* 保持正方形 */
+    background: #eef6ff;           /* 淡蓝色背景（和页面背景一致） */
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 2px solid rgba(31, 47, 70, 0.15); /* 像素感分割线 */
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.8); /* 内发光，增加层次 */
+}
+
+/* 隐藏原有的 img（占位图） */
+.video-card-image img {
+    display: none;
+}
+
+/* 用伪元素显示歌曲名称（韩系简约风格） */
+.video-card-image::after {
+    content: attr(data-title);      /* 从 HTML 的 data-title 属性读取 */
+    font-family: 'Courier New', Consolas, monospace;
+    font-size: 1.2rem;
+    font-weight: 400;
+    letter-spacing: 0.5px;
+    color: #2c3e50;
+    text-transform: uppercase;
+    opacity: 0.7;
+    padding: 8px 16px;
+    border: 1.5px solid rgba(31, 47, 70, 0.2);
+    border-radius: 0;              /* 直角，像素感 */
+    background: rgba(255,255,255,0.5);
+    box-shadow: 2px 2px 0 rgba(0,0,0,0.05);
+    image-rendering: pixelated;    /* 像素感渲染（仅对图片有效，但留着无妨） */
+}
+
+.video-card-image::after {
+    content: "";     /* 留空，不显示任何内容 */
+    display: none;   /* 或者直接隐藏整个伪元素 */
+}
+
+/* ===== 卡片内容区 ===== */
+.video-card-content {
+    padding: 20px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ===== 卡片标题（导航栏风格） ===== */
+.video-card-title {
+    font-family: 'Courier New', Consolas, monospace;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    color: #1f2f46;
+    margin-bottom: 8px;
+    line-height: 1.3;
+}
+
+/* ===== 卡片描述（导航栏副文本风格） ===== */
+.video-card-desc {
+    font-family: 'Courier New', Consolas, monospace;
+    font-size: 0.75rem;
+    color: #777;
+    margin-bottom: 16px;
+    flex-grow: 1;
+    line-height: 1.4;
+    letter-spacing: 0.5px;
+}
+
+/* ===== 底部按钮（和导航链接一致） ===== */
+.video-link {
+    display: inline-block;
+    padding: 5px 12px;
+    font-family: 'Courier New', Consolas, monospace;
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: 1.4px;
+    text-transform: uppercase;
+    color: #1f2f46;                 /* 导航栏默认文字颜色 */
+    background: #ffffff;            /* 白色背景 */
+    border: 1px solid rgba(31, 47, 70, 0.75);
+    border-radius: 0;
+    text-decoration: none;
+    transition: background 0.25s ease, box-shadow 0.25s ease;
+    cursor: pointer;
+    user-select: none;
+    text-align: center;
+    align-self: center;             /* ✅ 改为居中 */
+    width: auto;                    /* 自适应宽度 */
+}
+
+.video-link:hover {
+    background: #eef3f8;            /* 悬停变灰，同导航 */
+    color: #1f2f46;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.7), 0 2px 4px rgba(0,0,0,0.18);
+}
+
+.video-link:active {
+    transform: translateY(2px);
+    box-shadow: inset 1px 1px 0 rgba(0,0,0,0.2), inset -1px -1px 0 rgba(255,255,255,0.8);
+}
+
+/* ===== 移动端适配 ===== */
+@media (max-width: 768px) {
+    .video-card-title {
+        font-size: 0.8rem;
+    }
+    .video-card-desc {
+        font-size: 0.7rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .video-card-title {
+        font-size: 0.75rem;
+    }
+    .video-card-desc {
+        font-size: 0.65rem;
+    }
+    .video-link {
+        padding: 6px 14px;
+        font-size: 0.8rem;
+    }
+}
+
+/* =========================
+   MY CON 区域 — 撕纸张效果背景板
+   ========================= */
+.about-section {
+    background: transparent;
+    padding: 0;
+    margin: 40px 0;
+    border-radius: 0;
+    box-shadow: none;
+    position: relative;
+}
+
+/* 整块区域的背景板（撕纸效果） */
+.about-section::before {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: -8px;
+    right: -8px;
+    bottom: -10px;
+    background: #fcf9f5;
+    border-radius: 0;
+    clip-path: polygon(
+        0% 8px,
+        12px 0%,
+        18px 6px,
+        28px 0%,
+        36px 10px,
+        48px 2px,
+        56px 8px,
+        68px 0%,
+        78px 12px,
+        88px 3px,
+        100% 8px,
+        100% calc(100% - 12px),
+        92px calc(100% - 4px),
+        82px calc(100% - 10px),
+        72px calc(100% - 2px),
+        60px calc(100% - 14px),
+        48px calc(100% - 4px),
+        36px calc(100% - 10px),
+        24px calc(100% - 2px),
+        12px calc(100% - 8px),
+        0% calc(100% - 4px)
+    );
+    box-shadow: 
+        0 2px 20px rgba(0, 0, 0, 0.04),
+        0 8px 40px rgba(0, 0, 0, 0.06);
+    z-index: 0;
+    pointer-events: none;
+}
+
+/* 纸张纹理（极淡的质感） */
+.about-section::after {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: -8px;
+    right: -8px;
+    bottom: -10px;
+    background: 
+        repeating-linear-gradient(
+            0deg,
+            transparent,
+            transparent 2px,
+            rgba(200, 190, 180, 0.03) 2px,
+            rgba(200, 190, 180, 0.03) 4px
+        );
+    z-index: 0;
+    pointer-events: none;
+    clip-path: polygon(
+        0% 8px,
+        12px 0%,
+        18px 6px,
+        28px 0%,
+        36px 10px,
+        48px 2px,
+        56px 8px,
+        68px 0%,
+        78px 12px,
+        88px 3px,
+        100% 8px,
+        100% calc(100% - 12px),
+        92px calc(100% - 4px),
+        82px calc(100% - 10px),
+        72px calc(100% - 2px),
+        60px calc(100% - 14px),
+        48px calc(100% - 4px),
+        36px calc(100% - 10px),
+        24px calc(100% - 2px),
+        12px calc(100% - 8px),
+        0% calc(100% - 4px)
+    );
+}
+
+.about-section .section-header {
+    position: relative;
+    z-index: 1;
+}
+
+.about-section .section-header h2 {
+    color: #2c3e50;
+    letter-spacing: 2px;
+}
+
+/* ===== 每张卡片 — 极简白色卡片 ===== */
+.info-box {
+    position: relative;
+    z-index: 1;
+    background: #ffffff;
+    border-radius: 0;
+    padding: 28px 32px;
+    margin: 20px 0;
+    border: none;
+    border-bottom: 1px solid #f2ede8;   /* 极浅分隔线，增加层次 */
+    box-shadow: none;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    will-change: transform, box-shadow;
+    text-align: center;
+}
+
+/* 最后一张卡片没有分隔线 */
+.info-box:last-child {
+    border-bottom: none;
+}
+
+.info-box:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+}
+
+/* ===== 文字样式（中英双行，居中对齐） ===== */
+.info-box h3 {
+    color: #2c3e50;
+    margin-bottom: 10px;
+    font-size: 1.05rem;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    font-family: "Courier New", Consolas, "Microsoft YaHei UI", "PingFang SC", monospace;
+}
+
+.info-box p {
+    font-family: "Courier New", Consolas, "Microsoft YaHei UI", "PingFang SC", monospace;
+    font-size: 0.95rem;
+    font-weight: 300;
+    letter-spacing: 0.5px;
+    color: #2c3e50;
+    line-height: 1.8;
+    margin: 0;
+}
+
+.info-box p .en {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 300;
+    letter-spacing: 1px;
+    color: #aaa;
+    margin-top: 4px;
+}
+
+
+.info-box:hover {
+    transform: rotate(0deg) translateY(-4px) scale(1.005);
+    box-shadow: 
+        0 4px 12px rgba(0, 0, 0, 0.04),
+        0 12px 40px rgba(0, 0, 0, 0.08);
+}
+
+/* 卡片顶部装饰线（韩系简约） */
+.info-box::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #e8e0d8, #d5cdc5, #e8e0d8);
+    opacity: 0.5;
+}
+
+/* 标题样式 */
+.info-box h3 {
+    color: #2c3e50;
+    margin-bottom: 10px;
+    font-size: 1.05rem;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    font-family: 'Courier New', Consolas, monospace;
+}
+
+/* 正文样式 */
+.info-box p {
+    color: #5a5a5a;
+    font-size: 0.95rem;
+    line-height: 1.7;
+    font-weight: 300;
+    letter-spacing: 0.3px;
+}
+
+/* 卡片底部的小标签装饰（韩系细节） */
+.info-box::after {
+    content: '✧';
+    position: absolute;
+    bottom: 12px;
+    right: 20px;
+    font-size: 12px;
+    color: #d5cdc5;
+    opacity: 0.4;
+    letter-spacing: 2px;
+}
+
+/* =========================
+   ⑰ 页脚区域
+   新增：改进样式与响应式设计
+   ========================= */
+footer {
+    background: rgba(255, 255, 255, 0.55);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
+    padding: 40px 0;
+    margin-top: 60px;
+}
+
+@media (max-width: 768px) {
+    footer {
+        padding: 35px 0;
+        margin-top: 50px;
+    }
+}
+
+@media (max-width: 480px) {
+    footer {
+        padding: 30px 0;
+        margin-top: 40px;
+    }
+}
+
+.footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    text-align: center;
+}
+
+.footer-content h3 {
+    font-size: 1.1rem;
+    color: #2c3e50;
+    margin-bottom: 20px;
+    font-family: "Courier New", Consolas, "Microsoft YaHei UI", "PingFang SC", monospace;  /* ✅ 添加这一行 */
+    letter-spacing: 1px;           /* 可选：增加字间距，更接近标题风格 */
+    font-weight: 600;              /* 可选：保持适中粗细 */
+}
+
+.footer-content p {
+    font-family: "Courier New", Consolas, "Microsoft YaHei UI", "PingFang SC", monospace;  /* 改成和标题一样的字体 */
+    font-size: 0.9rem;          /* 大小，可调 */
+    color: #777;                /* 颜色，可调 */
+    letter-spacing: 1px;        /* 字间距，可调 */
+    font-weight: 300;           /* 粗细，可调 */
+}
+
+@media (max-width: 768px) {
+    .footer-content p {
+        font-size: 0.75rem;
+        letter-spacing: 1px;
+    }
+}
+
+@media (max-width: 768px) {
+    .footer-content h3 {
+        font-size: 1.05rem;
+        margin-bottom: 18px;
+    }
+}
+
+@media (max-width: 480px) {
+    .footer-content h3 {
+        font-size: 1rem;
+        margin-bottom: 15px;
+    }
+}
+
+.footer-links {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+@media (max-width: 768px) {
+    .footer-links {
+        gap: 25px;
+    }
+}
+
+@media (max-width: 480px) {
+    .footer-links {
+        gap: 20px;
+    }
+}
+
+.footer-links a {
+    color: var(--primary-blue);
+    text-decoration: none;
+    transition: var(--transition);
+    font-size: 0.95rem;
+}
+
+.footer-links a:hover {
+    color: var(--dark-blue);
+    text-decoration: underline;
+}
+
+.copyright {
+    color: var(--text-light);
+    font-size: 0.85rem;
+}
+
+@media (max-width: 480px) {
+    .copyright {
+        font-size: 0.8rem;
+    }
+}
+
+/* =========================
+   ⑯ 备用动画（目前没用到）
+   ========================= */
+@keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+}
+
+@keyframes bubble-glow {
+    0% {
+        box-shadow: 
+            0 0 15px rgba(168, 208, 230, 0.4),
+            0 5px 20px rgba(168, 208, 230, 0.3),
+            inset 0 0 30px rgba(168, 208, 230, 0.1);
+    }
+    100% {
+        box-shadow: 
+            0 0 20px rgba(168, 208, 230, 0.6),
+            0 8px 25px rgba(168, 208, 230, 0.4),
+            inset 0 0 40px rgba(168, 208, 230, 0.15);
+    }
+}
+
+/* =========================
+   ⑱ 性能优化
+   新增：减少重排重绘, 支持用户reduce-motion偏好
+   ========================= */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* 暗黑模式支持 */
+@media (prefers-color-scheme: dark) {
+    body {
+        background-color: #1a1a2e;
+        color: #e0e0e0;
+    }
+    
+    .video-section,
+    .about-section {
+        background-color: #2a2a3e;
+    }
+    
+    .video-card {
+        background-color: #2a2a3e;
+    }
+
+    .hidden {
+    display: none !important;
+    } 
+}
+
+
+/* ===== 左右翅膀（独立按钮） ===== */
+.wing-btn {
+    height: 100%;
+    width: auto;
+    max-width: 260px;
+    min-width: 120px;
+    flex-shrink: 1;
+    cursor: pointer;
+    opacity: 0.75;
+    transform: scale(1.15); /* 整体放大，1.15=放大15%，1.2=20% */
+    transition: transform 0.25s ease, opacity 0.25s ease, filter 0.25s ease;
+}
+
+/* 悬停效果：放大 + 变亮 + 发光 */
+.wing-btn:hover {
+    transform: scale(1.05); /* 从1.1改成1.05，轻微放大不越界 */
+    opacity: 1;
+    filter: drop-shadow(0 0 12px rgba(31, 47, 70, 0.4));
+}
+
+/* 点击效果：下沉 */
+.wing-btn:active {
+    transform: scale(0.92);
+    opacity: 0.6;
+}
+
+/* 左翅膀可以加一点专属效果（可选） */
+.wing-left:hover {
+    transform: scale(1.1) translateX(-4px);
+}
+
+/* 右翅膀可以加一点专属效果（可选） */
+.wing-right:hover {
+    transform: scale(1.1) translateX(4px);
+}
+
+.video-card-image img,
+.video-card-image .video-play-button {
+    display: none !important;
+}
+
