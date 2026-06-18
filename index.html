@@ -113,8 +113,8 @@ body {
         0 8px 20px rgba(0, 0, 0, 0.14),
         inset 0 1px 0 rgba(255, 255, 255, 0.65);
     position: relative;
-    animation: bar-breathe 3s ease-in-out infinite;
-    will-change: opacity, box-shadow;
+    animation: bar-breathe 4s ease-in-out infinite;
+    will-change: opacity, box-shadow, transform;     /* 增加 transform */
 }
 
 @media (max-width: 768px) {
@@ -180,25 +180,12 @@ body {
 }
 
 @keyframes bar-breathe {
-    0% {
-        opacity: 0.92;
-        box-shadow:
-            0 8px 20px rgba(0,0,0,0.15),
-            inset 0 1px 0 rgba(255,255,255,0.6);
-    }
-    50% {
-        opacity: 1;
-        box-shadow:
-            0 10px 28px rgba(0,0,0,0.22),
-            inset 0 1px 0 rgba(255,255,255,0.8);
-    }
-    100% {
-        opacity: 0.92;
-        box-shadow:
-            0 8px 20px rgba(0,0,0,0.15),
-            inset 0 1px 0 rgba(255,255,255,0.6);
-    }
+    0%   { opacity: 0.88; box-shadow: 0 8px 20px rgba(0,0,0,0.08); transform: scale(1) translateY(0); }
+    50%  { opacity: 1; box-shadow: 0 12px 32px rgba(0,0,0,0.14); transform: scale(1.01) translateY(-2px); }
+    100% { opacity: 0.88; box-shadow: 0 8px 20px rgba(0,0,0,0.08); transform: scale(1) translateY(0); }
 }
+
+
 
 /* =========================
    ⑥ 第二行导航栏（HOME / VIDEO / ABOUT）
@@ -212,6 +199,7 @@ body {
     position: sticky;
     top: 0;
     z-index: 100;
+    animation: nav-breathe 5s ease-in-out infinite;   
 }
 
 .nav-container {
@@ -390,37 +378,103 @@ body {
     }
 }
 
-/* ===== 标题区中间的情绪照片 ===== */
-/* ===== 牌堆容器（原图比例自适应） ===== */
-.title-photo {
-    position: relative;
-    width: 100%;
-    max-width: 600px;          /* 最大宽度，可根据需要调整 */
-    margin: 26px auto 34px;
-    border-radius: 18px;
-    background: rgba(255, 255, 255, 0.45);
-    backdrop-filter: blur(4px);
-    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.18);
-    overflow: visible;         /* 让卡片可以稍微溢出，更有层次 */
-    /* 高度由图片比例自动撑开，不设固定值 */
+/* 拍立得拼贴容器 - 必须用 position:relative + padding-bottom 撑高 */
+/* ===== 照片墙外层 ===== */
+.photo-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;                    /* 翅膀与照片间距 */
+    max-width: 1100px;            /* 整体变宽，容纳翅膀 */
+    margin: 80px auto;
+    padding: 0 15px;
 }
 
-/* ===== 每张卡片（牌） ===== */
+/* ===== 照片墙容器 — 固定高度，让图片撑满 ===== */
+.title-photo {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    width: 78%;
+    max-width: 880px;
+    height: 480px;
+    padding: 8px 12px;
+    background: transparent;    /* ✅ 改成透明，或删掉这一行 */
+    border-radius: 6px;
+    box-sizing: border-box;
+}
+
+/* ===== 所有图片 — 高度由容器决定 ===== */
 .photo-card {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: auto;              /* 高度由宽度和图片比例决定 */
-    border-radius: 18px;
-    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), 
-                opacity 0.4s ease,
-                box-shadow 0.4s ease;
-    will-change: transform, opacity;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    pointer-events: none;      /* 让点击穿透到按钮 */
-    display: block;
-    /* 图片比例由 img 自身决定，不裁剪 */
+    height: 100%;
+    width: auto;
+    object-fit: contain;
+    border: none;
+    border-radius: 0;
+    background: transparent;      /* ✅ 添加这一行，去掉白色背景 */
+    transition: all 0.4s ease;
+    flex-shrink: 0;
+    flex-grow: 0;
+    margin-right: -25px;
+    transition: opacity 0.4s ease, transform 0.4s ease;
+    opacity: 1;
+}
+
+/* ===== 左右子图（三图方案） ===== */
+.photo-card.thumb-l,
+.photo-card.thumb-r {
+    filter: blur(4px);           /* 虚化程度，可调 */
+    opacity: 1;
+    transform: scale(0.9);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    z-index: 1;
+}
+
+/* ===== 主图 ===== */
+.photo-card.main {
+    filter: blur(0);
+    opacity: 1;
+    transform: scale(1.15);
+    box-shadow: 0 6px 28px rgba(0,0,0,0.30);
+    z-index: 5;
+    background: transparent !important;
+}
+
+/* ===== 子图层叠虚化 ===== */
+/* ===== 子图统一比例（4:3） ===== */
+.photo-card.thumb-l1,
+.photo-card.thumb-l2,
+.photo-card.thumb-r1,
+.photo-card.thumb-r2 {
+    aspect-ratio: 4 / 3;          /* 强制 4:3 横版 */
+    object-fit: cover;            /* 裁剪填充，不拉伸 */
+}
+
+/* 原有的虚化、缩放样式保持不变，但为了清晰，我帮你合并一下： */
+.photo-card.thumb-l1,
+.photo-card.thumb-r1 {
+    filter: blur(5px);
+    opacity: 0.7;
+    transform: scale(0.95);
+    box-shadow: 0 2px 12px rgba(0,0,0,0.12);
+    z-index: 4;
+}
+
+.photo-card.thumb-l2,
+.photo-card.thumb-r2 {
+    filter: blur(10px);
+    opacity: 0.4;
+    transform: scale(0.85);
+    box-shadow: 0 1px 8px rgba(0,0,0,0.06);
+    z-index: 3;
+}
+
+/* 主图激活状态 */
+.photo-card.main.active {
+    transform: scale(1.15);
+    box-shadow: 0 6px 32px rgba(0,0,0,0.35);
 }
 
 /* ===== 左右切换按钮 ===== */
@@ -442,6 +496,66 @@ body {
 .photo-nav-btn:hover {
     background: rgba(255, 255, 255, 0.15);
     border-radius: 10px;
+}
+
+/* ============================================================
+   照片切换动画 — 柔和韩系版（缓慢淡入淡出 + 轻微滑动）
+   ============================================================ */
+
+/* ----- 主图：淡出 + 轻微缩小 ----- */
+@keyframes main-fade-out {
+    0%   { opacity: 1; transform: scale(1.15) translateX(0); filter: blur(0); }
+    100% { opacity: 0; transform: scale(1.05) translateX(0); filter: blur(0); }
+}
+
+/* ----- 主图：淡入 + 恢复大小 ----- */
+@keyframes main-fade-in {
+    0%   { opacity: 0; transform: scale(1.05) translateX(0); filter: blur(0); }
+    100% { opacity: 1; transform: scale(1.15) translateX(0); filter: blur(0); }
+}
+
+/* ----- 左子图：向左滑出 + 淡出 ----- */
+@keyframes thumb-l-out {
+    0%   { opacity: 1; transform: scale(0.9) translateX(0); filter: blur(4px); }
+    100% { opacity: 0; transform: scale(0.85) translateX(-30px); filter: blur(6px); }
+}
+
+/* ----- 右子图：向右滑出 + 淡出 ----- */
+@keyframes thumb-r-out {
+    0%   { opacity: 1; transform: scale(0.9) translateX(0); filter: blur(4px); }
+    100% { opacity: 0; transform: scale(0.85) translateX(30px); filter: blur(6px); }
+}
+
+/* ----- 左子图：从右侧滑入 + 淡入 ----- */
+@keyframes thumb-l-in {
+    0%   { opacity: 0; transform: scale(0.85) translateX(30px); filter: blur(6px); }
+    100% { opacity: 1; transform: scale(0.9) translateX(0); filter: blur(4px); }
+}
+
+/* ----- 右子图：从左侧滑入 + 淡入 ----- */
+@keyframes thumb-r-in {
+    0%   { opacity: 0; transform: scale(0.85) translateX(-30px); filter: blur(6px); }
+    100% { opacity: 1; transform: scale(0.9) translateX(0); filter: blur(4px); }
+}
+
+/* ===== 应用动画的类（JS 调用） ===== */
+.photo-card.main.wave-out {
+    animation: main-fade-out 0.7s ease forwards;
+}
+.photo-card.main.wave-in {
+    animation: main-fade-in 0.7s ease forwards;
+}
+.photo-card.thumb-l.wave-out {
+    animation: thumb-l-out 0.6s ease forwards;
+}
+.photo-card.thumb-r.wave-out {
+    animation: thumb-r-out 0.6s ease forwards;
+}
+.photo-card.thumb-l.wave-in {
+    animation: thumb-l-in 0.6s ease forwards;
+}
+.photo-card.thumb-r.wave-in {
+    animation: thumb-r-in 0.6s ease forwards;
 }
 
 /* =========================
@@ -816,95 +930,214 @@ body {
 }
 
 /* =========================
-   ⑮ 关于演出区域
-   优化点：响应式padding和border-radius
+   MY CON 区域 — 撕纸张效果背景板
    ========================= */
 .about-section {
-    background-color: var(--white);
-    border-radius: var(--border-radius);
-    padding: 50px 40px;
+    background: transparent;
+    padding: 0;
     margin: 40px 0;
-    box-shadow: var(--box-shadow);
+    border-radius: 0;
+    box-shadow: none;
+    position: relative;
 }
 
-@media (max-width: 768px) {
-    .about-section {
-        padding: 40px 30px;
-        margin: 30px 0;
-    }
+/* 整块区域的背景板（撕纸效果） */
+.about-section::before {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: -8px;
+    right: -8px;
+    bottom: -10px;
+    background: #fcf9f5;
+    border-radius: 0;
+    clip-path: polygon(
+        0% 8px,
+        12px 0%,
+        18px 6px,
+        28px 0%,
+        36px 10px,
+        48px 2px,
+        56px 8px,
+        68px 0%,
+        78px 12px,
+        88px 3px,
+        100% 8px,
+        100% calc(100% - 12px),
+        92px calc(100% - 4px),
+        82px calc(100% - 10px),
+        72px calc(100% - 2px),
+        60px calc(100% - 14px),
+        48px calc(100% - 4px),
+        36px calc(100% - 10px),
+        24px calc(100% - 2px),
+        12px calc(100% - 8px),
+        0% calc(100% - 4px)
+    );
+    box-shadow: 
+        0 2px 20px rgba(0, 0, 0, 0.04),
+        0 8px 40px rgba(0, 0, 0, 0.06);
+    z-index: 0;
+    pointer-events: none;
 }
 
-@media (max-width: 480px) {
-    .about-section {
-        padding: 30px 20px;
-        margin: 20px 0;
-        border-radius: 8px;
-    }
+/* 纸张纹理（极淡的质感） */
+.about-section::after {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: -8px;
+    right: -8px;
+    bottom: -10px;
+    background: 
+        repeating-linear-gradient(
+            0deg,
+            transparent,
+            transparent 2px,
+            rgba(200, 190, 180, 0.03) 2px,
+            rgba(200, 190, 180, 0.03) 4px
+        );
+    z-index: 0;
+    pointer-events: none;
+    clip-path: polygon(
+        0% 8px,
+        12px 0%,
+        18px 6px,
+        28px 0%,
+        36px 10px,
+        48px 2px,
+        56px 8px,
+        68px 0%,
+        78px 12px,
+        88px 3px,
+        100% 8px,
+        100% calc(100% - 12px),
+        92px calc(100% - 4px),
+        82px calc(100% - 10px),
+        72px calc(100% - 2px),
+        60px calc(100% - 14px),
+        48px calc(100% - 4px),
+        36px calc(100% - 10px),
+        24px calc(100% - 2px),
+        12px calc(100% - 8px),
+        0% calc(100% - 4px)
+    );
 }
 
+.about-section .section-header {
+    position: relative;
+    z-index: 1;
+}
+
+.about-section .section-header h2 {
+    color: #2c3e50;
+    letter-spacing: 2px;
+}
+
+/* ===== 每张卡片 — 极简白色卡片 ===== */
 .info-box {
-    background: var(--gray-bg);
-    border-radius: var(--border-radius);
-    padding: 25px;
+    position: relative;
+    z-index: 1;
+    background: #ffffff;
+    border-radius: 0;
+    padding: 28px 32px;
     margin: 20px 0;
-    border-left: 4px solid #2c3e50;
-    transition: var(--transition);
+    border: none;
+    border-bottom: 1px solid #f2ede8;   /* 极浅分隔线，增加层次 */
+    box-shadow: none;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
     will-change: transform, box-shadow;
+    text-align: center;
 }
 
-@media (max-width: 768px) {
-    .info-box {
-        padding: 22px;
-        margin: 18px 0;
-    }
-}
-
-@media (max-width: 480px) {
-    .info-box {
-        padding: 20px;
-        margin: 16px 0;
-    }
+/* 最后一张卡片没有分隔线 */
+.info-box:last-child {
+    border-bottom: none;
 }
 
 .info-box:hover {
-    box-shadow: 0 4px 12px rgba(44, 62, 80, 0.08);
-    transform: translateX(2px);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
 }
 
+/* ===== 文字样式（中英双行，居中对齐） ===== */
 .info-box h3 {
     color: #2c3e50;
     margin-bottom: 10px;
-    font-size: 1.1rem;
-}
-
-@media (max-width: 768px) {
-    .info-box h3 {
-        font-size: 1.05rem;
-    }
-}
-
-@media (max-width: 480px) {
-    .info-box h3 {
-        font-size: 1rem;
-    }
+    font-size: 1.05rem;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    font-family: "Courier New", Consolas, "Microsoft YaHei UI", "PingFang SC", monospace;
 }
 
 .info-box p {
-    color: var(--text-medium);
+    font-family: "Courier New", Consolas, "Microsoft YaHei UI", "PingFang SC", monospace;
     font-size: 0.95rem;
-    line-height: 1.6;
+    font-weight: 300;
+    letter-spacing: 0.5px;
+    color: #2c3e50;
+    line-height: 1.8;
+    margin: 0;
 }
 
-@media (max-width: 768px) {
-    .info-box p {
-        font-size: 0.93rem;
-    }
+.info-box p .en {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 300;
+    letter-spacing: 1px;
+    color: #aaa;
+    margin-top: 4px;
 }
 
-@media (max-width: 480px) {
-    .info-box p {
-        font-size: 0.9rem;
-    }
+
+.info-box:hover {
+    transform: rotate(0deg) translateY(-4px) scale(1.005);
+    box-shadow: 
+        0 4px 12px rgba(0, 0, 0, 0.04),
+        0 12px 40px rgba(0, 0, 0, 0.08);
+}
+
+/* 卡片顶部装饰线（韩系简约） */
+.info-box::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #e8e0d8, #d5cdc5, #e8e0d8);
+    opacity: 0.5;
+}
+
+/* 标题样式 */
+.info-box h3 {
+    color: #2c3e50;
+    margin-bottom: 10px;
+    font-size: 1.05rem;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    font-family: 'Courier New', Consolas, monospace;
+}
+
+/* 正文样式 */
+.info-box p {
+    color: #5a5a5a;
+    font-size: 0.95rem;
+    line-height: 1.7;
+    font-weight: 300;
+    letter-spacing: 0.3px;
+}
+
+/* 卡片底部的小标签装饰（韩系细节） */
+.info-box::after {
+    content: '✧';
+    position: absolute;
+    bottom: 12px;
+    right: 20px;
+    font-size: 12px;
+    color: #d5cdc5;
+    opacity: 0.4;
+    letter-spacing: 2px;
 }
 
 /* =========================
@@ -945,6 +1178,24 @@ footer {
     font-size: 1.1rem;
     color: #2c3e50;
     margin-bottom: 20px;
+    font-family: "Courier New", Consolas, "Microsoft YaHei UI", "PingFang SC", monospace;  /* ✅ 添加这一行 */
+    letter-spacing: 1px;           /* 可选：增加字间距，更接近标题风格 */
+    font-weight: 600;              /* 可选：保持适中粗细 */
+}
+
+.footer-content p {
+    font-family: "Courier New", Consolas, "Microsoft YaHei UI", "PingFang SC", monospace;  /* 改成和标题一样的字体 */
+    font-size: 0.9rem;          /* 大小，可调 */
+    color: #777;                /* 颜色，可调 */
+    letter-spacing: 1px;        /* 字间距，可调 */
+    font-weight: 300;           /* 粗细，可调 */
+}
+
+@media (max-width: 768px) {
+    .footer-content p {
+        font-size: 0.75rem;
+        letter-spacing: 1px;
+    }
 }
 
 @media (max-width: 768px) {
@@ -1051,10 +1302,6 @@ footer {
         background-color: #2a2a3e;
     }
     
-    .info-box {
-        background-color: #333344;
-    }
-    
     .video-card {
         background-color: #2a2a3e;
     }
@@ -1064,45 +1311,23 @@ footer {
     } 
 }
 
-/* ===== 外层容器 ===== */
-.photo-wrapper {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: -20px;              /* ✅ 负值让翅膀嵌入图片边缘，更贴合 */
-    max-width: 900px;
-    margin: 26px auto 34px;
-    position: relative;
-}
-
-/* ===== 图片容器 ===== */
-.title-photo {
-    flex-shrink: 0;
-    max-width: 420px;
-    border-radius: 18px;
-    overflow: hidden;
-    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.18);
-}
-
-.title-photo img {
-    display: block;
-    width: 100%;
-    height: auto;
-}
 
 /* ===== 左右翅膀（独立按钮） ===== */
 .wing-btn {
-    width: 180px;            /* 控制翅膀大小，可调 */
-    height: auto;
-    flex-shrink: 0;
+    height: 100%;
+    width: auto;
+    max-width: 260px;
+    min-width: 120px;
+    flex-shrink: 1;
     cursor: pointer;
     opacity: 0.75;
+    transform: scale(1.15); /* 整体放大，1.15=放大15%，1.2=20% */
     transition: transform 0.25s ease, opacity 0.25s ease, filter 0.25s ease;
 }
 
 /* 悬停效果：放大 + 变亮 + 发光 */
 .wing-btn:hover {
-    transform: scale(1.1);
+    transform: scale(1.05); /* 从1.1改成1.05，轻微放大不越界 */
     opacity: 1;
     filter: drop-shadow(0 0 12px rgba(31, 47, 70, 0.4));
 }
@@ -1162,13 +1387,13 @@ footer {
 <!-- 外层容器：左翅膀 + 图片 + 右翅膀 -->
 <div class="photo-wrapper">
     <!-- 左翅膀：点击上一张 -->
-    <svg class="wing-btn wing-left" viewBox="0 0 500 90" onclick="prevImage()">
-        <g stroke="#1f2f46" fill="none" stroke-width="1.2" opacity="0.9">
-            <path d="M 60,45 C 70,40 80,38 90,38 C 100,40 110,45 115,55 C 117,65 113,75 103,80 C 90,85 70,85 55,78 C 45,68 43,55 47,45 Z" />
-            <path d="M 65,50 C 75,47 85,45 95,45 C 105,47 113,53 118,60 C 118,70 110,76 98,80 C 83,80 68,73 60,63 C 60,53 65,50 65,50 Z" />
-            <path d="M 70,55 C 80,52 90,52 98,55 C 103,62 98,70 90,73 C 80,71 73,65 73,58 Z" />
-        </g>
-    </svg>
+<svg class="wing-btn wing-left" viewBox="0 0 200 100" onclick="prevImage()">
+    <g stroke="#1f2f46" fill="none" stroke-width="1.2" opacity="0.9">
+        <path d="M 60,45 C 70,40 80,38 90,38 C 100,40 110,45 115,55 C 117,65 113,75 103,80 C 90,85 70,85 55,78 C 45,68 43,55 47,45 Z" />
+        <path d="M 65,50 C 75,47 85,45 95,45 C 105,47 113,53 118,60 C 118,70 110,76 98,80 C 83,80 68,73 60,63 C 60,53 65,50 65,50 Z" />
+        <path d="M 70,55 C 80,52 90,52 98,55 C 103,62 98,70 90,73 C 80,71 73,65 73,58 Z" />
+    </g>
+</svg>
 
 <div class="title-photo" id="photoStack">
     <!-- 左右透明切换按钮 -->
@@ -1178,14 +1403,13 @@ footer {
 </div>
 
     <!-- 右翅膀：点击下一张 -->
-    <svg class="wing-btn wing-right" viewBox="0 0 500 90" onclick="nextImage()">
-        <!-- 直接把左翅膀的 path 复制过来，再用 transform 镜像 -->
-        <g stroke="#1f2f46" fill="none" stroke-width="1.2" opacity="0.9" transform="translate(500,0) scale(-1,1)">
-            <path d="M 60,45 C 70,40 80,38 90,38 C 100,40 110,45 115,55 C 117,65 113,75 103,80 C 90,85 70,85 55,78 C 45,68 43,55 47,45 Z" />
-            <path d="M 65,50 C 75,47 85,45 95,45 C 105,47 113,53 118,60 C 118,70 110,76 98,80 C 83,80 68,73 60,63 C 60,53 65,50 65,50 Z" />
-            <path d="M 70,55 C 80,52 90,52 98,55 C 103,62 98,70 90,73 C 80,71 73,65 73,58 Z" />
-        </g>
-    </svg>
+<svg class="wing-btn wing-right" viewBox="0 0 200 100" onclick="nextImage()">
+    <g stroke="#1f2f46" fill="none" stroke-width="1.2" opacity="0.9" transform="translate(200,0) scale(-1,1)">
+        <path d="M 60,45 C 70,40 80,38 90,38 C 100,40 110,45 115,55 C 117,65 113,75 103,80 C 90,85 70,85 55,78 C 45,68 43,55 47,45 Z" />
+        <path d="M 65,50 C 75,47 85,45 95,45 C 105,47 113,53 118,60 C 118,70 110,76 98,80 C 83,80 68,73 60,63 C 60,53 65,50 65,50 Z" />
+        <path d="M 70,55 C 80,52 90,52 98,55 C 103,62 98,70 90,73 C 80,71 73,65 73,58 Z" />
+    </g>
+</svg>
 </div>
 
             <!-- 日期展示 -->
@@ -1299,19 +1523,29 @@ footer {
                 <h2>About the Concert</h2>
             </div>
             
-            <div class="info-box">
-                <h3>💭 My Experience</h3>
-                <p>𝟐𝟎𝟐𝟓.𝟔.𝟐𝟖 ┃ 第一次见到NMIXX 6个特别有诚意又有上进心的女孩们 🥹 </p>
-            </div>
-            
-            <div class="info-box">
-                <h3>📝 record purpose</h3>
-                <p>本页面用于整理当日舞台的饭拍影像、成员表现与个人记录～为无法到场的NSWER提供观看资源，也为到场NSWER留下美好回忆 💭</p>
-            </div>
-            
-            <div class="info-box">
-                <h3>⏳ still organizing...</h3>
-                <p>全景舞台, special stages, 成员们的每个闪耀瞬间 — 都还在慢慢整理中 ✨<br>Just wait a little more until we collect all the moments 🫶</p>            </div>
+           <div class="info-box">
+    <h3>💭 My Experience</h3>
+    <p>
+        𝟐𝟎𝟐𝟓.𝟔.𝟐𝟖 | 第一次见到NMIXX 6个特别有诚意又有上进心的女孩们
+        <span class="en">The first time meeting NMIXX, six girls full of sincerity and ambition. </span>
+    </p>
+</div>
+
+<div class="info-box">
+    <h3>📝 Record Purpose</h3>
+    <p>
+        为无法到场的NSWER提供观看资源，也为到场NSWER留下美好回忆 
+        <span class="en">This page compiles fan-cam footage, member performances, and personal records from that day. Providing viewing resources for NSWERs who couldn't attend, and preserving beautiful memories for those who were there. </span>
+    </p>
+</div>
+
+<div class="info-box">
+    <h3>⏳ Still Organizing...</h3>
+    <p>
+        special stages, 成员们的每个闪耀瞬间 — 都还在慢慢整理中...
+        <span class="en">Just wait a little more until we collect all the moments </span>
+    </p>
+</div>
         </section>
         
         <!-- 页脚 -->
@@ -1399,94 +1633,127 @@ const imageList = [
     '20250628_213730.jpg',
     '20250628_212622.jpg',
     '20250628_212720.jpg',
-    '20250628_212508.jpg',
-
+    '20250628_212508.jpg'
 ];
 let currentIndex = 0;
-
 const container = document.getElementById('photoStack');
-let cards = [];
-const MAX_VISIBLE = 5;          // 叠放卡片数量（等于图片总数）
+let mainImg = null;
+let thumbImgs = [];
 
-// ===== 初始化卡片 =====
 function initCards() {
-    // 保留按钮
-    const buttons = container.querySelectorAll('.photo-nav-btn');
     container.innerHTML = '';
-    buttons.forEach(btn => container.appendChild(btn));
+    thumbImgs = [];
 
-    // 创建卡片
-    for (let i = 0; i < MAX_VISIBLE; i++) {
-        const img = document.createElement('img');
-        img.className = 'photo-card';
-        img.draggable = false;
-        img.style.width = '100%';
-        img.style.height = 'auto';
-        container.appendChild(img);
-        cards.push(img);
-    }
+    // 只创建三张图：左子图、主图、右子图
+    // 左子图
+    const leftImg = document.createElement('img');
+    leftImg.className = 'photo-card thumb-l';
+    leftImg.draggable = false;
+    container.appendChild(leftImg);
+    thumbImgs.push(leftImg);   // thumbImgs[0] 为左子图
+
+    // 主图
+    mainImg = document.createElement('img');
+    mainImg.className = 'photo-card main active';
+    mainImg.draggable = false;
+    container.appendChild(mainImg);
+
+    // 右子图
+    const rightImg = document.createElement('img');
+    rightImg.className = 'photo-card thumb-r';
+    rightImg.draggable = false;
+    container.appendChild(rightImg);
+    thumbImgs.push(rightImg);  // thumbImgs[1] 为右子图
+
     updateCards();
 }
 
-// ===== 更新所有卡片 =====
 function updateCards() {
     const total = imageList.length;
     if (total === 0) return;
 
-    for (let i = 0; i < MAX_VISIBLE; i++) {
-        const imgIndex = (currentIndex - i + total) % total;
-        const card = cards[i];
-        card.src = imageList[imgIndex];
+    // 主图显示 currentIndex
+    mainImg.src = imageList[currentIndex];
+    mainImg.classList.add('active');
 
-        // 🃏 打牌感参数（调大偏移和旋转）
-        const offsetX = i * 25;      // 向右露出 25px（原来12）
-        const offsetY = i * 18;      // 向下露出 18px（原来8）
-        const rotate = i * 4;        // 每张旋转 4°（原来1.8）
-        const scale = 1 - i * 0.05;  // 逐层缩小 5%（原来2.5%）
+    // 左子图 = currentIndex - 1，右子图 = currentIndex + 1
+    const leftIdx = (currentIndex - 1 + total) % total;
+    const rightIdx = (currentIndex + 1) % total;
 
-        card.style.transform = `translate(${offsetX}px, ${offsetY}px) rotate(${rotate}deg) scale(${scale})`;
-        card.style.zIndex = MAX_VISIBLE - i;
-        card.style.opacity = 1 - i * 0.15;  // 透明度递减保留
-        card.style.boxShadow = i === 0 
-            ? '0 8px 25px rgba(0,0,0,0.3)' 
-            : '0 4px 12px rgba(0,0,0,0.1)';
-    }
-
-    // 动态设置容器高度（保持不变）
-    const firstCard = cards[0];
-    if (firstCard) {
-        const setHeight = () => {
-            container.style.height = firstCard.offsetHeight + 'px';
-        };
-        if (firstCard.complete && firstCard.naturalHeight) {
-            setHeight();
-        } else {
-            firstCard.onload = setHeight;
-        }
-        setTimeout(setHeight, 200);
-    }
+    thumbImgs[0].src = imageList[leftIdx];   // 左
+    thumbImgs[1].src = imageList[rightIdx];  // 右
 }
 
-// ===== 上一张 =====
+
+// ===== 切换函数（海面掠过版） =====
+let isAnimating = false;
+
+function switchImage(direction) {
+    if (isAnimating || imageList.length === 0) return;
+
+    let newIndex = (currentIndex + direction + imageList.length) % imageList.length;
+    if (newIndex === currentIndex) return;
+
+    isAnimating = true;
+
+    const mainCard = mainImg;
+    const leftCard = thumbImgs[0];
+    const rightCard = thumbImgs[1];
+
+    // 1. 移除旧动画类，重置状态
+    mainCard.classList.remove('wave-out', 'wave-in');
+    leftCard.classList.remove('wave-out', 'wave-in');
+    rightCard.classList.remove('wave-out', 'wave-in');
+
+    // 强制重排
+    void mainCard.offsetWidth;
+
+    // 2. 根据方向决定动画方向
+    if (direction === -1) { // 向左切换 → 图片向右滑出
+        mainCard.classList.add('wave-out');
+        leftCard.classList.add('wave-out');
+        rightCard.classList.add('wave-out');
+    } else { // 向右切换 → 图片向左滑出
+        mainCard.classList.add('wave-out');
+        leftCard.classList.add('wave-out');
+        rightCard.classList.add('wave-out');
+    }
+
+    // 3. 等待滑出动画完成（700ms）
+    setTimeout(() => {
+        // 更新索引和图片
+        currentIndex = newIndex;
+        updateCards();
+
+        // 移除所有动画类
+        mainCard.classList.remove('wave-out', 'wave-in');
+        leftCard.classList.remove('wave-out', 'wave-in');
+        rightCard.classList.remove('wave-out', 'wave-in');
+
+        // 4. 主图滑入
+        mainCard.classList.add('wave-in');
+
+        // 5. 子图滑入（方向与滑出相反）
+        leftCard.classList.add('wave-in');
+        rightCard.classList.add('wave-in');
+
+        // 6. 解锁
+        setTimeout(() => {
+            // 移除动画类，恢复默认状态
+            mainCard.classList.remove('wave-in');
+            leftCard.classList.remove('wave-in');
+            rightCard.classList.remove('wave-in');
+            isAnimating = false;
+        }, 800);
+    }, 700);
+}
+
 function prevImage() {
-    if (imageList.length === 0) return;
-    currentIndex = (currentIndex - 1 + imageList.length) % imageList.length;
-    cards.forEach(card => card.style.transition = 'transform 0.3s ease, opacity 0.3s ease');
-    updateCards();
-    setTimeout(() => {
-        cards.forEach(card => card.style.transition = 'transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.4s ease');
-    }, 300);
+    switchImage(-1);
 }
 
-// ===== 下一张 =====
 function nextImage() {
-    if (imageList.length === 0) return;
-    currentIndex = (currentIndex + 1) % imageList.length;
-    cards.forEach(card => card.style.transition = 'transform 0.3s ease, opacity 0.3s ease');
-    updateCards();
-    setTimeout(() => {
-        cards.forEach(card => card.style.transition = 'transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.4s ease');
-    }, 300);
+    switchImage(1);
 }
 
 // ===== 键盘左右键 =====
@@ -1495,14 +1762,6 @@ document.addEventListener('keydown', function(e) {
     if (e.key === 'ArrowRight') nextImage();
 });
 
-// ===== 窗口改变时重新计算（可选） =====
-let resizeTimer;
-window.addEventListener('resize', function() {
-    clearTimeout(resizeTimer);
-    resizeTimer = setTimeout(() => updateCards(), 200);
-});
-
-// ===== 暴露函数给 HTML onclick =====
 window.prevImage = prevImage;
 window.nextImage = nextImage;
 
