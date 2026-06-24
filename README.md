@@ -6,9 +6,9 @@ The code is fully open-source under MIT license, only for front-end beginner pra
 
 ## Basic Info
 Built with native HTML5 + internal CSS only. This page archives fan-cam stage videos, personal concert experience notes, and on-site photos for NMIXX's 2nd Fan Concert held in Macau on June 28, 2025.
-<img width="1640" height="2086" alt="ffe943fe1decf4df020d2188eb89d83d" src="https://github.com/user-attachments/assets/b3e10232-3f66-490f-8d85-9cdcd7747ef7" />
 <img width="3816" height="5120" alt="0c9e186a885ca9ed216eb0084e19a555" src="https://github.com/user-attachments/assets/80af0730-2403-41b4-85b9-602f398c4d14" />
 <img width="1640" height="2300" alt="66b68cdb950b00b3c4b4032f0cee776c" src="https://github.com/user-attachments/assets/d135bfed-43d4-4009-86f1-bfeea66171ad" />
+<img width="1640" height="2086" alt="ffe943fe1decf4df020d2188eb89d83d" src="https://github.com/user-attachments/assets/b3e10232-3f66-490f-8d85-9cdcd7747ef7" />
 
 ## Completed Project Workflow (Matching Internship Capabilities)
 This project fully replicates the complete working process of data governance, functional testing and product iteration, which matches Data Agent / Software Testing / AI Product internship requirements:
