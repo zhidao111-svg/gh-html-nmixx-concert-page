@@ -803,6 +803,7 @@ body {
     justify-content: center;
     border-bottom: 2px solid rgba(31, 47, 70, 0.15); /* 像素感分割线 */
     box-shadow: inset 0 0 0 1px rgba(255,255,255,0.8); /* 内发光，增加层次 */
+    pointer-events: none; /* 关键：容器不拦截点击 */
 }
 
 /* 隐藏原有的 img（占位图） */
@@ -1344,3 +1345,367 @@ footer {
     display: none !important;
 }
 
+/* 留言区样式 */
+.msg-section{margin:60px 0;}
+.msg-form{display:flex;flex-direction:column;gap:12;margin-bottom:30px}
+#userName,#userMsg{padding:10px;border:1px solid #eee;border-radius:6px}
+#userMsg{min-height:100px}
+.msg-form button{width:120px;padding:8px;background:#1f2f46;color:#fff;border:none;border-radius:4px}
+.msg-item{border:1px solid #eee;padding:15px;border-radius:8px;margin-bottom:12px}
+.msg-item h4{margin:0 0 6px}
+.msg-item span{font-size:12px;color:#999}
+
+.collect-btn-card {
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+  border: none;
+  background: rgba(255,255,255,0.75);
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 16px;
+  z-index: 9999;
+  padding: 0;
+  pointer-events: auto !important;
+}
+/* 所有图标统一禁止拦截点击 */
+.collect-btn-card i {
+  pointer-events: none;
+}
+.collect-btn-card .fa-star.fa-regular {
+  color:#999;
+}
+.collect-btn-card .fa-star.fa-solid {
+  color: var(--primary-blue);
+}
+
+
+/* 收藏列表页面样式 collect.html */
+.collect-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+}
+@media (max-width:768px){
+    .collect-list{grid-template-columns: repeat(2,1fr);}
+}
+@media (max-width:480px){
+    .collect-list{grid-template-columns: 1fr;}
+}
+.collect-item {
+    background: #fff;
+    border:1px solid rgba(31,47,70,0.75);
+    padding:20px;
+    display:flex;
+    flex-direction:column;
+}
+.collect-item h3 {
+    font-family: 'Courier New', Consolas, monospace;
+    text-transform: uppercase;
+    color:#1f2f46;
+    margin-bottom:12px;
+}
+.collect-item .del-collect {
+    align-self:center;
+    margin-top:10px;
+    padding:5px 12px;
+    font-family: 'Courier New', Consolas, monospace;
+    border:1px solid rgba(31,47,70,0.75);
+    background:#fff;
+    cursor:pointer;
+}
+.collect-empty {
+    color:#777;
+    font-family: monospace;
+}
+
+/* 顶部图片收藏爱心按钮 */
+.collect-btn-top {
+    position:absolute;
+    top:10px;
+    right:10px;
+    width:32px;
+    height:32px;
+    border-radius:50%;
+    background:rgba(255,255,255,0.7);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    z-index:99;
+}
+.collect-btn-top i.fa-heart {
+    color:#999;
+}
+.collect-btn-top i.fa-heart.solid {
+    color:#ff4757;
+}
+
+
+
+/* 留言发布框背景 */
+.msg-form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 30px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 14px;
+    background: #f7f8fa;
+}
+.msg-form input, .msg-form textarea {
+    padding: 10px 14px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 14px;
+    background: #fff;
+}
+.msg-form textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+.msg-form button {
+    width: fit-content;
+    padding: 8px 24px;
+    border: none;
+    background: #1f2f46;
+    color: #fff;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+/* 留言动态卡片底色 */
+.msg-item {
+  border:1px solid #ddd;
+  padding:18px;
+  border-radius:12px;
+  margin-bottom:16px;
+  background: #f7f8fa;
+}
+.msg-item h4 {
+    margin: 0 0 8px 0;
+    color: #1f2f46;
+}
+.msg-item span {
+    font-size: 12px;
+    color: #666;
+}
+.social-btn {
+  display:flex;
+  gap:10px;
+  margin-top:12px;
+}
+.social-btn button {
+  border:none;
+  padding:5px 12px;
+  border-radius:20px;
+  cursor:pointer;
+  font-size:13px;
+}
+.like-btn {background:#ffe6f0;}
+.reply-btn {background:#e6f0ff;}
+.share-btn {background:#f0ffe6;}
+
+/* 公共聊天室底色 */
+.chat-list {
+    height: 220px;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    padding: 12px;
+    margin-bottom:10px;
+    background: #f7f8fa;
+}
+.chat-item {
+    margin: 4px 0;
+}
+.chat-input {
+    display: flex;
+    gap:8px;
+}
+.chat-input input {
+    flex:1;
+    padding:6px 10px;
+    border:1px solid #ccc;
+    border-radius:6px;
+}
+
+
+/* 同好匹配模块 */
+.match-section {
+  margin: 60px 0;
+}
+.match-open-btn {
+  border: 1px solid #1f2f46;
+  background: transparent;
+  color: #1f2f46;
+  padding: 10px 26px;
+  border-radius: 30px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+.match-open-btn:hover {
+  background: #1f2f46;
+  color: #fff;
+}
+
+/* 弹窗遮罩 */
+.match-modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(31, 47, 70, 0.7);
+  z-index: 9999;
+  align-items: center;
+  justify-content: center;
+}
+.match-card {
+  background: #f7f8fa;
+  width: 340px;
+  padding: 36px 28px;
+  border-radius: 16px;
+  border: 1px solid #ddd;
+}
+.match-card h3 {
+  margin: 0 0 6px;
+  color: #1f2f46;
+  font-weight: 500;
+}
+.match-desc {
+  font-size: 13px;
+  color: #666;
+  margin-bottom: 24px;
+}
+.match-user-box {
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  min-height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  line-height: 1.6;
+}
+.match-btn-group {
+  display: flex;
+  gap: 10px;
+  margin-top: 26px;
+}
+.match-btn {
+  flex: 1;
+  padding: 9px 0;
+  border-radius: 24px;
+  border: none;
+  cursor: pointer;
+  font-size: 13px;
+}
+.match-btn.gray {
+  background: #e5e7eb;
+  color: #333;
+}
+.match-btn.dark {
+  background: #ddd;
+  color: #111;
+}
+.match-btn.main {
+  background: #1f2f46;
+  color: #fff;
+}
+
+
+/* 追星标签弹窗美化 */
+.tag-modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  align-items: center;
+  justify-content: center;
+}
+.modal-mask {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: rgba(31, 47, 70, 0.65);
+}
+.tag-card {
+  position: relative;
+  background: #f7f8fa;
+  width: 360px;
+  padding: 32px 26px;
+  border-radius: 16px;
+  border: 1px solid #ddd;
+}
+.tag-card h3 {
+  margin: 0 0 6px;
+  color: #1f2f46;
+  font-weight: 500;
+}
+.tag-tip {
+  font-size: 13px;
+  color: #666;
+  margin-bottom: 24px;
+}
+.tag-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 28px;
+}
+.tag-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+.tag-item:hover {
+  border-color: #1f2f46;
+}
+.tag-item input:checked + span {
+  color: #1f2f46;
+  font-weight: 500;
+}
+.tag-btn-group {
+  display: flex;
+  gap: 10px;
+}
+.tag-btn {
+  flex: 1;
+  padding: 10px 0;
+  border-radius: 26px;
+  border: none;
+  font-size: 14px;
+  cursor: pointer;
+}
+.tag-btn.cancel {
+  background: #e5e7eb;
+  color: #333;
+}
+.tag-btn.confirm {
+  background: #1f2f46;
+  color: #fff;
+}
+
+.edit-tag-btn {
+  border: 1px solid #1f2f46;
+  background: transparent;
+  padding: 6px 16px;
+  border-radius: 20px;
+  cursor: pointer;
+  margin-bottom:16px;
+}
+.edit-tag-btn:hover {
+  background:#1f2f46;
+  color:#fff;
+}

@@ -20,16 +20,20 @@
         </div>
     </div>
 
-    <!-- 第二行：导航链接 -->
-    <nav class="main-nav">
-        <div class="nav-container">
-            <ul class="nav-menu">
-<li class="nav-item"><a href="#" class="nav-link active" data-section="home">HOME</a></li>                <li class="nav-item"><a href="#videos" class="nav-link" data-section="videos">STAGE VIDEO</a></li>
-                <li class="nav-item"><a href="#about" class="nav-link" data-section="about">MY CON</a></li>
-                <li class="nav-item"><a href="#home" class="nav-link" data-section="gallery">PHOTO WALL</a></li>
-            </ul>
-        </div>
-    </nav>
+<!-- 第二行：导航链接 -->
+<nav class="main-nav">
+    <div class="nav-container">
+        <ul class="nav-menu">
+            <li class="nav-item"><a href="#home" class="nav-link active" data-section="home">HOME</a></li>
+            <li class="nav-item"><a href="#videos" class="nav-link" data-section="videos">STAGE VIDEO</a></li>
+<a href="#messageBoard" class="nav-link" data-section="messageBoard">MY CON</a>
+<li class="nav-item"><a href="#photoWall" class="nav-link">PHOTO WALL</a></li>
+<!-- 新增收藏跳转按钮，无data-section，新开页面 -->
+<li class="nav-item"><a href="collect.html" class="nav-link" data-section="collect">MY COLLECT</a></li>
+            </li>
+        </ul>
+    </div>
+</nav>
 
 <div class="container">
         <!-- 主标题区域 -->
@@ -38,6 +42,8 @@
             <h1>MACAU·2025</h1>
             <h2>NMIXX 2nd Fan Concert 기록</h2> 
 
+
+<section class="photo-wall" id="photoWall">           
 <!-- 外层容器：左翅膀 + 图片 + 右翅膀 -->
 <div class="photo-wrapper">
     <!-- 左翅膀：点击上一张 -->
@@ -53,7 +59,10 @@
     <!-- 左右透明切换按钮 -->
     <div class="photo-nav-btn left-btn" onclick="prevImage()"></div>
     <div class="photo-nav-btn right-btn" onclick="nextImage()"></div>
-    <!-- 卡片由 JavaScript 动态生成，无需写 img -->
+    <!-- 卡片由 JavaScript 动态生成 -->
+<div class="collect-btn-top" onclick="collectCurrentPic()">
+    <i class="fa-solid fa-heart"></i>
+</div>
 </div>
 
     <!-- 右翅膀：点击下一张 -->
@@ -82,7 +91,8 @@
                 </div>
             </div>
         </section>
-        
+
+
         <!-- 新增：视频区域 - 九宫格卡片布局 -->
         <!-- 修改说明：
             1. 改造grid布局：PC端3列、768px以下2列、480px以下单列
@@ -95,12 +105,14 @@
                 <h2>📸┃shots</h2>
             </div>
             
-            <!-- 九宫格卡片容器：PC端3列 -->
+<!-- 九宫格卡片容器：PC端3列 -->
 <div class="video-list">
     <!-- 第1首：Run For Roses -->
     <div class="video-card">
         <div class="video-card-image">
-            <img src="https://via.placeholder.com/300x300?text=Run+For+Roses" alt="Run For Roses">
+            <!-- 删除失效境外img，不再404报错 -->
+<button class="collect-btn-card" data-title="Run For Roses" onclick="collectVideo('Run For Roses',this)">                <i class="fa-regular fa-star"></i>
+            </button>
         </div>
         <div class="video-card-content">
             <h3 class="video-card-title">Run For Roses</h3>
@@ -112,7 +124,8 @@
     <!-- 第2首：Sonar -->
     <div class="video-card">
         <div class="video-card-image">
-            <img src="https://via.placeholder.com/300x300?text=Sonar" alt="Sonar">
+<button class="collect-btn-card" data-title="Sonar" onclick="collectVideo('Sonar',this)">                <i class="fa-regular fa-star"></i>
+            </button>
         </div>
         <div class="video-card-content">
             <h3 class="video-card-title">Sonar</h3>
@@ -124,7 +137,8 @@
     <!-- 第3首：Beat Beat -->
     <div class="video-card">
         <div class="video-card-image">
-            <img src="https://via.placeholder.com/300x300?text=Beat+Beat" alt="Beat Beat">
+<button class="collect-btn-card" data-title="Beat Beat" onclick="collectVideo('Beat Beat',this)">                <i class="fa-regular fa-star"></i>
+            </button>
         </div>
         <div class="video-card-content">
             <h3 class="video-card-title">Beat Beat</h3>
@@ -136,7 +150,8 @@
     <!-- 第4首：Plot Twist -->
     <div class="video-card">
         <div class="video-card-image">
-            <img src="https://via.placeholder.com/300x300?text=Plot+Twist" alt="Plot Twist">
+<button class="collect-btn-card" data-title="Plot Twist" onclick="collectVideo('Plot Twist',this)">                <i class="fa-regular fa-star"></i>
+            </button>
         </div>
         <div class="video-card-content">
             <h3 class="video-card-title">Plot Twist</h3>
@@ -148,7 +163,8 @@
     <!-- 第5首：Love Me Like This -->
     <div class="video-card">
         <div class="video-card-image">
-            <img src="https://via.placeholder.com/300x300?text=Love+Me+Like+This" alt="Love Me Like This">
+<button class="collect-btn-card" data-title="Love Me Like This" onclick="collectVideo('Love Me Like This',this)">                <i class="fa-regular fa-star"></i>
+            </button>
         </div>
         <div class="video-card-content">
             <h3 class="video-card-title">Love Me Like This</h3>
@@ -160,7 +176,8 @@
     <!-- 第6首：Young Dumb Stupid -->
     <div class="video-card">
         <div class="video-card-image">
-            <img src="https://via.placeholder.com/300x300?text=Young+Dumb+Stupid" alt="Young Dumb Stupid">
+<button class="collect-btn-card" data-title="Young Dumb Stupid" onclick="collectVideo('Young Dumb Stupid',this)">                <i class="fa-regular fa-star"></i>
+            </button>
         </div>
         <div class="video-card-content">
             <h3 class="video-card-title">Young Dumb Stupid</h3>
@@ -169,8 +186,28 @@
         </div>
     </div>
 </div>
-        </section>
         
+ <section class="msg-section" id="messageBoard">
+  <div class="section-header"><h2>留言区</h2></div>
+  <div class="msg-form">
+    <input id="userName" placeholder="你的昵称">
+    <textarea id="userMsg" placeholder="分享你的观演感受、饭拍、追星日常"></textarea>
+    <button onclick="submitMessage()">发布瞬间</button>
+  </div>
+  <div id="msgWrap"></div>
+</section>
+
+<button class="edit-tag-btn" onclick="document.getElementById('tagModal').style.display='flex'">修改我的追星标签</button>
+
+<section class="chat-room" id="chatRoom">
+  <div class="section-header"><h2>同好聊天室</h2></div>
+  <div class="chat-list" id="chatWrap"></div>
+  <div class="chat-input">
+    <input id="chatInput" placeholder="输入聊天内容">
+    <button onclick="sendRoomChat()">发送</button>
+  </div>
+</section>
+
         <!-- 关于演出区域 -->
         <section class="about-section" id="about">
             <div class="section-header">
@@ -213,5 +250,36 @@
     </div>
 
 <script src="js/main.js"></script>
+
+<div class="tag-modal" id="tagModal">
+  <div class="modal-mask" onclick="closeTagModal()"></div>
+  <div class="tag-card">
+    <h3>你的追星标签</h3>
+    <p class="tag-tip">勾选喜好，方便匹配同好NSWER</p>
+    <div class="tag-list">
+      <label class="tag-item">
+        <input type="checkbox" value="Kyujin">
+        <span>Kyujin</span>
+      </label>
+      <label class="tag-item">
+        <input type="checkbox" value="Sullyoon">
+        <span>Sullyoon</span>
+      </label>
+      <label class="tag-item">
+        <input type="checkbox" value="澳门演唱会">
+        <span>澳门场</span>
+      </label>
+      <label class="tag-item">
+        <input type="checkbox" value="饭拍爱好者">
+        <span>饭拍爱好者</span>
+      </label>
+    </div>
+    <div class="tag-btn-group">
+      <button class="tag-btn cancel" onclick="closeTagModal()">取消</button>
+      <button class="tag-btn confirm" onclick="saveTags();closeTagModal()">保存标签</button>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>

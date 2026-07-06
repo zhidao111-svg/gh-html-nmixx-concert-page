@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Collection · MIXX LAB</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <div class="hero-nav">
+        <div class="browser-bar">
+            <span class="browser-text">MIXX LAB</span>
+        </div>
+    </div>
+
+<nav class="main-nav">
+    <div class="nav-container">
+       <ul class="nav-menu">
+    <li class="nav-item"><a href="index.html#home" class="nav-link" data-section="home">HOME</a></li>
+    <li class="nav-item"><a href="index.html#videos" class="nav-link" data-section="videos">STAGE VIDEO</a></li>
+    <li class="nav-item"><a href="index.html#messageBoard" class="nav-link" data-section="messageBoard">MY CON</a></li>
+    <li class="nav-item"><a href="index.html#photoWall" class="nav-link" data-section="photoWall">PHOTO WALL</a></li>
+    <li class="nav-item"><a href="collect.html" class="nav-link" data-section="collect">MY COLLECT</a></li>
+</ul>
+    </div>
+</nav>
+
+    <div class="container" style="margin-top:60px;">
+        <div class="section-header">
+            <h2>My Collection</h2>
+        </div>
+        <!-- 默认隐藏空提示，JS控制显示 -->
+        <div class="collect-empty" id="emptyTip" style="text-align:center; padding:40px 0; font-size:16px; display:none;">暂无收藏，前往stage video收藏曲目</div>
+        <div class="collect-list" id="collectWrap"></div>
+    </div>
+
+<script src="js/main.js"></script>
+<script>
+// DOM加载完成立刻渲染收藏列表，不等待图片资源
+document.addEventListener('DOMContentLoaded', function(){
+    renderCollect();
+});
+</script>
+
+</body>
+</html>
