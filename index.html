@@ -26,7 +26,7 @@
         <ul class="nav-menu">
             <li class="nav-item"><a href="#home" class="nav-link active" data-section="home">HOME</a></li>
             <li class="nav-item"><a href="#videos" class="nav-link" data-section="videos">STAGE VIDEO</a></li>
-<a href="#messageBoard" class="nav-link" data-section="messageBoard">MY CON</a>
+<a href="#reactionLog" class="nav-link" data-section="reactionLog">MY CON</a>
 <li class="nav-item"><a href="#photoWall" class="nav-link">PHOTO WALL</a></li>
 <!-- 新增收藏跳转按钮，无data-section，新开页面 -->
 <li class="nav-item"><a href="collect.html" class="nav-link" data-section="collect">MY COLLECT</a></li>
@@ -110,6 +110,7 @@
     <!-- 第1首：Run For Roses -->
     <div class="video-card">
         <div class="video-card-image">
+            <img src="images/0083znWegy1i87ccvegsoj33y83y84qr.jpg" alt="Run For Roses">
             <!-- 删除失效境外img，不再404报错 -->
 <button class="collect-btn-card" data-title="Run For Roses" onclick="collectVideo('Run For Roses',this)">                <i class="fa-regular fa-star"></i>
             </button>
@@ -124,6 +125,7 @@
     <!-- 第2首：Sonar -->
     <div class="video-card">
         <div class="video-card-image">
+            <img src="images/006YIJCWly1hzdvh4jt3cj30u00u0wi0.jpg" alt="Sonar">
 <button class="collect-btn-card" data-title="Sonar" onclick="collectVideo('Sonar',this)">                <i class="fa-regular fa-star"></i>
             </button>
         </div>
@@ -137,6 +139,7 @@
     <!-- 第3首：Beat Beat -->
     <div class="video-card">
         <div class="video-card-image">
+            <img src="images/006YIJCWgy1hx3dg3bb2aj30u00u00zy.jpg" alt="Beat Beat">
 <button class="collect-btn-card" data-title="Beat Beat" onclick="collectVideo('Beat Beat',this)">                <i class="fa-regular fa-star"></i>
             </button>
         </div>
@@ -150,6 +153,7 @@
     <!-- 第4首：Plot Twist -->
     <div class="video-card">
         <div class="video-card-image">
+            <img src="images/006YIJCWgy1hx3dg2srhbj30u00u0q6i.jpg" alt="Plot Twist">
 <button class="collect-btn-card" data-title="Plot Twist" onclick="collectVideo('Plot Twist',this)">                <i class="fa-regular fa-star"></i>
             </button>
         </div>
@@ -163,6 +167,7 @@
     <!-- 第5首：Love Me Like This -->
     <div class="video-card">
         <div class="video-card-image">
+            <img src="images/006YIJCWgy1hx3dg2fxmwj30u00u0jue.jpg" alt="Love Me Like This">
 <button class="collect-btn-card" data-title="Love Me Like This" onclick="collectVideo('Love Me Like This',this)">                <i class="fa-regular fa-star"></i>
             </button>
         </div>
@@ -176,6 +181,7 @@
     <!-- 第6首：Young Dumb Stupid -->
     <div class="video-card">
         <div class="video-card-image">
+            <img src="images/006YIJCWgy1hx3dg1myq8j30u00u0n0d.jpg" alt="Young Dumb Stupid">
 <button class="collect-btn-card" data-title="Young Dumb Stupid" onclick="collectVideo('Young Dumb Stupid',this)">                <i class="fa-regular fa-star"></i>
             </button>
         </div>
@@ -187,26 +193,55 @@
     </div>
 </div>
         
- <section class="msg-section" id="messageBoard">
-  <div class="section-header"><h2>留言区</h2></div>
-  <div class="msg-form">
-    <input id="userName" placeholder="你的昵称">
-    <textarea id="userMsg" placeholder="分享你的观演感受、饭拍、追星日常"></textarea>
-    <button onclick="submitMessage()">发布瞬间</button>
-  </div>
-  <div id="msgWrap"></div>
-</section>
+        <section class="reaction-section" id="reactionLog">
+            <div class="section-header">
+                <h2>REACTION LOG</h2>
+                <p>what stayed with you?</p>
+            </div>
+            <div class="reaction-list" id="reactionList" aria-label="Reaction log"></div>
+        </section>
 
-<button class="edit-tag-btn" onclick="document.getElementById('tagModal').style.display='flex'">修改我的追星标签</button>
+        <section class="public-room" id="publicRoom">
+            <div class="section-header">
+                <h2>PUBLIC ROOM</h2>
+                <p>leave a trace from the same night</p>
+            </div>
+            <div class="public-room-grid">
+                <section class="room-module comment-log" id="commentLog">
+                    <div class="room-module-header">
+                        <h3>COMMENT LOG</h3>
+                        <p>what do you want to leave here?</p>
+                    </div>
+                    <form class="room-form" id="commentForm">
+                        <label for="userName">NAME</label>
+                        <input id="userName" name="name" type="text" maxlength="40" autocomplete="nickname" placeholder="NAME" required>
+                        <label for="userMsg">COMMENT</label>
+                        <textarea id="userMsg" name="comment" maxlength="180" placeholder="write up to 180 characters" required></textarea>
+                        <div class="room-form-meta">
+                            <span id="commentCount">0 / 180</span>
+                            <button type="submit">POST COMMENT</button>
+                        </div>
+                    </form>
+                    <div class="comment-list" id="commentList" aria-live="polite"></div>
+                </section>
 
-<section class="chat-room" id="chatRoom">
-  <div class="section-header"><h2>同好聊天室</h2></div>
-  <div class="chat-list" id="chatWrap"></div>
-  <div class="chat-input">
-    <input id="chatInput" placeholder="输入聊天内容">
-    <button onclick="sendRoomChat()">发送</button>
-  </div>
-</section>
+                <section class="room-module chat-log" id="chatRoom">
+                    <div class="room-module-header">
+                        <h3>CHAT ROOM</h3>
+                        <p>short notes from the same night</p>
+                    </div>
+                    <div class="chat-list" id="chatWrap" aria-live="polite"></div>
+                    <form class="chat-input" id="chatForm">
+                        <label for="chatInput">MESSAGE</label>
+                        <div class="chat-compose">
+                            <input id="chatInput" name="message" type="text" maxlength="80" placeholder="80 characters max" required>
+                            <button type="submit">SEND</button>
+                        </div>
+                        <div class="room-storage-note">saved on this device<br>이 기기에만 저장됩니다</div>
+                    </form>
+                </section>
+            </div>
+        </section>
 
         <!-- 关于演出区域 -->
         <section class="about-section" id="about">
@@ -250,36 +285,6 @@
     </div>
 
 <script src="js/main.js"></script>
-
-<div class="tag-modal" id="tagModal">
-  <div class="modal-mask" onclick="closeTagModal()"></div>
-  <div class="tag-card">
-    <h3>你的追星标签</h3>
-    <p class="tag-tip">勾选喜好，方便匹配同好NSWER</p>
-    <div class="tag-list">
-      <label class="tag-item">
-        <input type="checkbox" value="Kyujin">
-        <span>Kyujin</span>
-      </label>
-      <label class="tag-item">
-        <input type="checkbox" value="Sullyoon">
-        <span>Sullyoon</span>
-      </label>
-      <label class="tag-item">
-        <input type="checkbox" value="澳门演唱会">
-        <span>澳门场</span>
-      </label>
-      <label class="tag-item">
-        <input type="checkbox" value="饭拍爱好者">
-        <span>饭拍爱好者</span>
-      </label>
-    </div>
-    <div class="tag-btn-group">
-      <button class="tag-btn cancel" onclick="closeTagModal()">取消</button>
-      <button class="tag-btn confirm" onclick="saveTags();closeTagModal()">保存标签</button>
-    </div>
-  </div>
-</div>
 
 </body>
 </html>
