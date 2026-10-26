@@ -7,6 +7,12 @@ All codes open-source under MIT License, only for front-end learning & fan commu
 <img width="1640" height="2300" alt="66b68cdb950b00b3c4b4032f0cee776c" src="https://github.com/user-attachments/assets/d135bfed-43d4-4009-86f1-bfeea66171ad" />
 <img width="1640" height="2086" alt="ffe943fe1decf4df020d2188eb89d83d" src="https://github.com/user-attachments/assets/b3e10232-3f66-490f-8d85-9cdcd7747ef7" />
 
+## User Behavior Data Dashboard (data.html)
+A self-service, read-only analytics page built from the site's own real user behavior: `data.html` aggregates live on-site interactions (favorites / reactions / comments / chat, read from `localStorage`) into KPI cards, favorite-track rankings and reaction distribution. No backend, no third-party tracker. It demonstrates a product/analytics loop: define metrics → instrument local events → visualize into a readable dashboard → feed back into iteration decisions. Preview: `https://zhidao111-svg.github.io/gh-html-nmixx-concert-page/data.html`
+
+## 用户行为数据看板（data.html）
+独立只读分析页，基于站点自身真实用户行为：`data.html` 将站内实时交互（收藏 / 反应 / 评论 / 聊天，读取自 `localStorage`）聚合为 KPI 卡片、收藏曲目排行与反应分布。无后端、无第三方埋点，体现"定义指标 → 本地埋点 → 数据可视化 → 反哺迭代"的产品 / 数据分析思路。预览：`https://zhidao111-svg.github.io/gh-html-nmixx-concert-page/data.html`
+
 ## Project Basic Info
 ### Tech Stack
 Native HTML5 + custom handwritten CSS styling, deployed via GitHub Pages automatically.
