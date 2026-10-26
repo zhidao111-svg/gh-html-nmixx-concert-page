@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="MIXX LAB 用户行为数据看板 - 基于本机浏览器的收藏/反应/评论/聊天聚合统计">
+    <title>MIXX LAB · DATA | 用户行为数据看板</title>
+    <style>
+        :root {
+            --bg: #0e1116;
+            --card: #161b24;
+            --card-2: #1c2430;
+            --line: #2a3542;
+            --ink: #e8edf5;
+            --ink-2: #9aa7b6;
+            --accent: #7c5cff;
+            --accent-2: #4fc3f7;
+            --green: #3ddc97;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: "Segoe UI", -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+            background: var(--bg);
+            color: var(--ink);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        .wrap { max-width: 960px; margin: 0 auto; padding: 32px 20px 48px; }
+        header.top { display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 8px; border-bottom: 1px solid var(--line); padding-bottom: 16px; margin-bottom: 24px; }
+        h1 { font-size: 20px; letter-spacing: 1px; }
+        h1 small { color: var(--ink-2); font-weight: 400; margin-left: 10px; font-size: 13px; }
+        .back { color: var(--accent-2); text-decoration: none; font-size: 13px; }
+        .kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 14px; margin-bottom: 24px; }
+        .kpi { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 16px 18px; }
+        .kpi .num { font-size: 30px; font-weight: 700; color: var(--accent); }
+        .kpi .lbl { font-size: 12px; color: var(--ink-2); margin-top: 2px; letter-spacing: .5px; }
+        .panel { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 18px 20px; margin-bottom: 18px; }
+        .panel h2 { font-size: 14px; color: var(--ink-2); letter-spacing: 1px; margin-bottom: 14px; }
+        .bar-row { display: grid; grid-template-columns: 130px 1fr 46px; align-items: center; gap: 12px; margin-bottom: 10px; font-size: 13px; }
+        .bar-row .name { color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .bar-track { height: 14px; background: var(--card-2); border-radius: 999px; overflow: hidden; }
+        .bar-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent-2)); border-radius: 999px; width: 0; transition: width .6s ease; }
+        .bar-row .val { text-align: right; color: var(--ink-2); font-variant-numeric: tabular-nums; }
+        .empty { color: var(--ink-2); font-size: 13px; padding: 8px 0; }
+        .note { color: var(--ink-2); font-size: 12px; margin-top: 6px; }
+        .pill { display: inline-block; background: var(--card-2); border: 1px solid var(--line); border-radius: 999px; padding: 2px 10px; font-size: 11px; color: var(--ink-2); margin-right: 6px; }
+    </style>
+</head>
+<body>
+    <div class="wrap">
+        <header class="top">
+            <h1>MIXX LAB · DATA<small>用户行为数据看板</small></h1>
+            <a class="back" href="index.html">← 返回主页</a>
+        </header>
+
+        <div class="kpis">
+            <div class="kpi"><div class="num" id="kCollect">0</div><div class="lbl">收藏曲目</div></div>
+            <div class="kpi"><div class="num" id="kReaction">0</div><div class="lbl">反应总数</div></div>
+            <div class="kpi"><div class="num" id="kComment">0</div><div class="lbl">评论</div></div>
+            <div class="kpi"><div class="num" id="kChat">0</div><div class="lbl">聊天消息</div></div>
+        </div>
+
+        <div class="panel">
+            <h2>收藏曲目排行</h2>
+            <div id="collectList"></div>
+        </div>
+
+        <div class="panel">
+            <h2>反应分布</h2>
+            <div id="reactionList"></div>
+        </div>
+
+        <div class="panel">
+            <h2>说明</h2>
+            <div class="note">
+                · 数据口径：本页面聚合自同一浏览器在本站留下的收藏 / 反应 / 评论 / 聊天记录（localStorage 本地统计），非服务器埋点。<br>
+                · 用于站内"用户行为 + 内容热度"的自助分析：哪些舞台曲目被收藏最多、哪些反应最热烈，据此优化内容展示与运营重点。
+            </div>
+        </div>
+    </div>
+
+<script>
+(function () {
+    'use strict';
+    function read(key, fb) { try { const v = localStorage.getItem(key); return v ? JSON.parse(v) : fb; } catch (e) { return fb; } }
+
+    const collect = read('mixx_lab_collect', []);
+    const reactions = read('mixx-lab-reactions', {});
+    const comments = read('mixx-lab-comments', []);
+    const chat = read('mixx-lab-chat', []);
+
+    // 反应基础值（与 main.js 一致）
+    const reactionDefaults = [
+        { symbol: 'ㅠㅠ', label: 'TEARS', base: 128 },
+        { symbol: '!!!', label: 'IMPACT', base: 96 },
+        { symbol: '♡', label: 'MELT', base: 72 },
+        { symbol: '✦', label: 'GLOW', base: 51 },
+        { symbol: '↻', label: 'LOOP', base: 43 }
+    ];
+
+    // KPI
+    document.getElementById('kCollect').textContent = Array.isArray(collect) ? collect.length : 0;
+    document.getElementById('kComment').textContent = Array.isArray(comments) ? comments.length : 0;
+    document.getElementById('kChat').textContent = Array.isArray(chat) ? chat.length : 0;
+    const totalReaction = reactionDefaults.reduce((s, r) => s + r.base + (reactions[r.label] || 0), 0);
+    document.getElementById('kReaction').textContent = totalReaction;
+
+    // 收藏曲目排行
+    const cWrap = document.getElementById('collectList');
+    const cArr = Array.isArray(collect) ? collect : [];
+    if (!cArr.length) { cWrap.innerHTML = '<div class="empty">暂无收藏曲目。</div>'; }
+    else {
+        const counts = {};
+        cArr.forEach(t => { counts[t] = (counts[t] || 0) + 1; });
+        const rows = Object.entries(counts).sort((a, b) => b[1] - a[1]);
+        const max = rows[0][1] || 1;
+        rows.forEach(([title, n]) => {
+            const row = document.createElement('div');
+            row.className = 'bar-row';
+            row.innerHTML =
+                '<div class="name"></div>' +
+                '<div class="bar-track"><div class="bar-fill"></div></div>' +
+                '<div class="val"></div>';
+            row.querySelector('.name').textContent = title;
+            row.querySelector('.bar-fill').style.width = (n / max * 100) + '%';
+            row.querySelector('.val').textContent = n;
+            cWrap.appendChild(row);
+        });
+    }
+
+    // 反应分布
+    const rWrap = document.getElementById('reactionList');
+    const rRows = reactionDefaults.map(r => ({ label: r.label, count: r.base + (reactions[r.label] || 0) }))
+        .sort((a, b) => b.count - a.count);
+    const rMax = rRows[0].count || 1;
+    rRows.forEach(r => {
+        const row = document.createElement('div');
+        row.className = 'bar-row';
+        row.innerHTML =
+            '<div class="name"></div>' +
+            '<div class="bar-track"><div class="bar-fill"></div></div>' +
+            '<div class="val"></div>';
+        row.querySelector('.name').textContent = r.label;
+        row.querySelector('.bar-fill').style.width = (r.count / rMax * 100) + '%';
+        row.querySelector('.val').textContent = r.count;
+        rWrap.appendChild(row);
+    });
+}());
+</script>
+</body>
+</html>
